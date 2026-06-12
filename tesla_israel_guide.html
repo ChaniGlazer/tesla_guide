@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך רכישת טסלה בישראל - מרכז החלטות</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap');
+        body { font-family: 'Assistant', sans-serif; background-color: #f8fafc; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .tesla-blue { color: #3b82f6; }
+        .bg-tesla-blue { background-color: #3b82f6; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <nav class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <span class="text-2xl font-bold text-slate-900">Tesla<span class="text-blue-600">Guide</span> IL</span>
+                <div class="hidden md:flex space-x-reverse space-x-6 overflow-x-auto">
+                    <button onclick="showTab('strategy')" class="nav-btn font-semibold text-blue-600 border-b-2 border-blue-600 pb-1">אסטרטגיה</button>
+                    <button onclick="showTab('finance')" class="nav-btn font-semibold text-slate-500 hover:text-blue-600 pb-1">מימון</button>
+                    <button onclick="showTab('inspection')" class="nav-btn font-semibold text-slate-500 hover:text-blue-600 pb-1">בדיקה</button>
+                    <button onclick="showTab('tco')" class="nav-btn font-semibold text-slate-500 hover:text-blue-600 pb-1">עלויות נלוות</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-4">איך לקנות טסלה בישראל בצורה חכמה?</h1>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">מקסום ערך, מזעור עלויות ובדיקה הנדסית יסודית. כל המידע שאתם צריכים כדי לא לשלם שקל אחד מיותר.</p>
+        </header>
+
+        <!-- Section: Strategy -->
+        <section id="strategy" class="tab-content active space-y-8">
+            <div class="bg-blue-50 border-r-4 border-blue-500 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-2">אסטרטגיית "מקסימום ערך"</h2>
+                <p>הדו"ח מראה כי נכון לשנת 2024-2025, דגם ה-Model 3 Long Range RWD הוא המשתלם ביותר בישראל. הוא מציע את הטווח הגבוה ביותר (750 ק"מ) ונהנה ממסלולי מימון של 0% ריבית שמקזזים את פערי המחיר מול דגם הבסיס.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="text-lg font-bold mb-4">השוואת טווח נסיעה (WLTP) מול מחיר</h3>
+                    <div class="chart-container">
+                        <canvas id="rangeChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="text-lg font-bold mb-4 text-center">חדש מול משומש (2021-2022)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="py-2">דגם</th>
+                                    <th class="py-2">מחיר (ש"ח)</th>
+                                    <th class="py-2">ירידת ערך</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-3">Model 3 RWD (חדש)</td>
+                                    <td class="py-3">₪213,816</td>
+                                    <td class="py-3 text-red-500">0%</td>
+                                </tr>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-3">Model 3 SR+ (2021)</td>
+                                    <td class="py-3">₪110,000</td>
+                                    <td class="py-3 text-green-600">~48% חיסכון</td>
+                                </tr>
+                                <tr class="border-b hover:bg-slate-50">
+                                    <td class="py-3">Model 3 LR (2021)</td>
+                                    <td class="py-3">₪145,000</td>
+                                    <td class="py-3 text-green-600">~40% חיסכון</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-500 italic">רכישת רכב משומש (יד שניה) מאפשרת לקבל רכב מאובזר בחצי מחיר, לאחר ספיגת ירידת הערך המשמעותית ביותר.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Finance -->
+        <section id="finance" class="tab-content space-y-8">
+            <div class="bg-amber-50 border-r-4 border-amber-500 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-2">מלכודת ה-0% ריבית</h2>
+                <p>שימו לב: המימון הרשמי של טסלה בריבית 0% הוא **צמוד מדד**. בתקופות אינפלציה, ההחזר החודשי עשוי לעלות משמעותית. לעומת זאת, בנקים מציעים ריבית קבועה (סביב 6.5%) אך ללא הצמדה.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl card-shadow border-t-4 border-blue-500">
+                    <h3 class="font-bold text-lg mb-2">מימון טסלה (0%)</h3>
+                    <p class="text-sm text-slate-600 mb-4">לדגמי Long Range בלבד.</p>
+                    <ul class="text-sm space-y-2">
+                        <li>• ריבית: 0%</li>
+                        <li>• הצמדה: למדד המחירים</li>
+                        <li>• מקדמה: כ-₪35,000</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl card-shadow border-t-4 border-slate-400">
+                    <h3 class="font-bold text-lg mb-2">הלוואה בנקאית</h3>
+                    <p class="text-sm text-slate-600 mb-4">בנקים מובילים (לאומי/פועלים).</p>
+                    <ul class="text-sm space-y-2">
+                        <li>• ריבית: 6.5% - 7%</li>
+                        <li>• הצמדה: ללא</li>
+                        <li>• מקדמה: 0% - 20%</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl card-shadow border-t-4 border-slate-900">
+                    <h3 class="font-bold text-lg mb-2">מימון חוץ-בנקאי</h3>
+                    <p class="text-sm text-slate-600 mb-4">מימון ישיר ודומיו.</p>
+                    <ul class="text-sm space-y-2">
+                        <li>• ריבית: 7.5% - 9%</li>
+                        <li>• אישור: מהיר (24 שעות)</li>
+                        <li>• מקדמה: לרוב 0%</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl card-shadow">
+                <h3 class="text-lg font-bold mb-6">סימולציית עלות מימון (5 שנים, ₪150,000)</h3>
+                <div class="chart-container">
+                    <canvas id="financeChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Inspection -->
+        <section id="inspection" class="tab-content space-y-8">
+            <div class="bg-green-50 border-r-4 border-green-500 p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-2">מעבדת בדיקות: אל תקנו "חתול בשק"</h2>
+                <p>בטסלה, הבדיקה הדיגיטלית חשובה לא פחות מהבדיקה המכנית. ביום המסירה (חדש) או לפני רכישה (משומש), עקבו אחר הפרוטוקול המקצועי.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="font-bold text-xl mb-4 tesla-blue">צ'קליסט יום מסירה (רכב חדש)</h3>
+                    <div id="checklist-new" class="space-y-3 text-right">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="font-bold text-xl mb-4 text-amber-600">בדיקת רכב משומש (יד שניה)</h3>
+                    <div class="space-y-6">
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-bold text-slate-900">1. בריאות הסוללה (SoH)</h4>
+                            <p class="text-sm text-slate-600 mt-1">מומלץ לבצע בדיקת AVILOO FLASH. היא לוקחת 3 דקות ומפיקה דוח אובייקטיבי על מצב התאים.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-bold text-slate-900">2. מרכב אלומיניום</h4>
+                            <p class="text-sm text-slate-600 mt-1">תיקוני פחחות בטסלה יקרים מאוד. בדקו היטב דוח סליקה ביטוחי וסטיית חיישנים.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 rounded-lg">
+                            <h4 class="font-bold text-slate-900">3. שחיקת צמיגים</h4>
+                            <p class="text-sm text-slate-600 mt-1">בגלל המומנט הגבוה, צמיגים נשחקים מהר. עומק חריץ מינימלי למסירה: 4 מ"מ.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: TCO -->
+        <section id="tco" class="tab-content space-y-8">
+            <header class="text-center">
+                <h2 class="text-2xl font-bold">עלות בעלות כוללת (TCO)</h2>
+                <p class="text-slate-600">כמה באמת תעלה לכם הטסלה בחודש?</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="text-lg font-bold mb-4">התפלגות עלויות שנתיות משוערות</h3>
+                    <div class="chart-container">
+                        <canvas id="tcoChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl card-shadow border-r-4 border-blue-500">
+                        <h4 class="font-bold text-lg">תשתית טעינה ביתית</h4>
+                        <div class="flex justify-between items-center mt-4">
+                            <span>התקנה בסיסית</span>
+                            <span class="font-bold">₪3,163</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span>התקנה מורכבת</span>
+                            <span class="font-bold">₪9,640</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-4">* טעינה ביתית עולה כ-₪45 לסוללה מלאה, לעומת כ-₪100 בעמדה ציבורית.</p>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl card-shadow border-r-4 border-slate-900">
+                        <h4 class="font-bold text-lg">ביטוח שנתי ממוצע</h4>
+                        <div class="flex justify-between items-center mt-4">
+                            <span>Model 3</span>
+                            <span class="font-bold">₪6,000 - ₪7,500</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span>Model Y</span>
+                            <span class="font-bold">₪6,500 - ₪8,500</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-white py-12 mt-20">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h3 class="text-xl font-bold mb-4">מוכנים להתקדם לטסלה?</h3>
+            <p class="text-slate-400 mb-6">זכרו: תמיד לבצע סקר שוק ביטוחי ולבדוק את תשתית החשמל בבניין לפני ההזמנה.</p>
+            <div class="text-xs text-slate-500 border-t border-slate-800 pt-6">
+                המידע מבוסס על נתוני שוק 2024-2025. המחירים והריביות עשויים להשתנות בהתאם למדיניות היצרן והחלטות המיסוי.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Navigation Logic ---
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
+                btn.classList.add('text-slate-500');
+            });
+            event.currentTarget.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            event.currentTarget.classList.remove('text-slate-500');
+        }
+
+        // --- Data ---
+        const models = [
+            { name: 'Model 3 RWD', range: 513, price: 213816 },
+            { name: 'Model 3 LR RWD', range: 750, price: 228928 },
+            { name: 'Model 3 LR AWD', range: 629, range: 629, price: 247750 },
+            { name: 'Model Y RWD', range: 455, price: 248000 },
+            { name: 'Model Y LR RWD', range: 622, price: 268401 }
+        ];
+
+        const checklistItems = [
+            "בדיקת מרווחי פאנלים (Panel Gaps) ואחידות מרכב",
+            "בדיקת שריטות או פגמי צבע תחת אור חזק",
+            "וידוא קבלת 2 כרטיסי מפתח (NFC)",
+            "וידוא כבל טעינה ביתי ומתאם בערכה",
+            "בדיקת מערכת ניווט והפעלת Preconditioning",
+            "נסיעה קצרה לוודא שאין רעידות בהגה",
+            "טעינה קצרה בסופרצ'ארג'ר לוודא תקינות CCS2"
+        ];
+
+        // --- Charts Initialization ---
+        window.onload = function() {
+            // 1. Range Chart
+            new Chart(document.getElementById('rangeChart'), {
+                type: 'bar',
+                data: {
+                    labels: models.map(m => m.name),
+                    datasets: [{
+                        label: 'טווח נסיעה (ק"מ)',
+                        data: models.map(m => m.range),
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, title: { display: true, text: 'קילומטרים (WLTP)' } }
+                    }
+                }
+            });
+
+            // 2. Finance Comparison Chart
+            new Chart(document.getElementById('financeChart'), {
+                type: 'line',
+                data: {
+                    labels: ['שנה 1', 'שנה 2', 'שנה 3', 'שנה 4', 'שנה 5'],
+                    datasets: [
+                        {
+                            label: 'מימון 0% צמוד מדד (3% שנתי)',
+                            data: [150000, 154500, 159135, 163909, 168826],
+                            borderColor: '#3b82f6',
+                            tension: 0.3
+                        },
+                        {
+                            label: 'הלוואה בנקאית 6.5% קבועה',
+                            data: [150000, 150000, 150000, 150000, 150000], // Nominal capital stays same, interest paid separately
+                            borderColor: '#94a3b8',
+                            borderDash: [5, 5],
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: { mode: 'index', intersect: false }
+                    },
+                    scales: {
+                        y: { title: { display: true, text: 'יתרת חוב נומינלית (₪)' } }
+                    }
+                }
+            });
+
+            // 3. TCO Chart
+            new Chart(document.getElementById('tcoChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['ביטוח', 'טעינה (15K ק"מ)', 'תחזוקה/טסט'],
+                    datasets: [{
+                        data: [7000, 1500, 1000],
+                        backgroundColor: ['#1e293b', '#3b82f6', '#94a3b8'],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // --- Populate Checklist ---
+            const listContainer = document.getElementById('checklist-new');
+            checklistItems.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "flex items-center space-x-reverse space-x-3 p-2 hover:bg-blue-50 rounded cursor-pointer transition";
+                div.innerHTML = `
+                    <input type="checkbox" id="item-${index}" class="w-5 h-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500">
+                    <label for="item-${index}" class="text-slate-700 select-none">${item}</label>
+                `;
+                listContainer.appendChild(div);
+            });
+        };
+    </script>
+</body>
+</html>
