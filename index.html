@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מדריך ומחשבון רכישת טסלה בישראל</title>
+    <title>מנוע השוואה והערכת טסלה יד שנייה בישראל עם ייעוץ AI</title>
     <!-- Tailwind CSS for modern responsive styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js for data visualization -->
@@ -13,56 +13,86 @@
         @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap');
         body { 
             font-family: 'Assistant', sans-serif; 
-            background-color: #f8fafc; 
+            background-color: #0f172a; /* Premium Slate/Dark Theme */
         }
         .chart-container { 
             position: relative; 
             width: 100%; 
-            height: 300px; 
+            height: 280px; 
         }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .tesla-shadow {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        .tesla-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tesla-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+        }
+        /* Custom scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        /* Pulse glow for AI section */
+        .ai-glow {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased">
+<body class="text-slate-100 antialiased">
 
     <!-- Header Navigation -->
-    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50">
+    <nav class="bg-slate-900/90 border-b border-slate-800 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-reverse space-x-3">
-                    <span class="text-2xl font-black tracking-wider text-slate-900">TESLA<span class="text-blue-600 font-normal">GUIDE</span><span class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded mr-2 font-bold">IL</span></span>
+                    <span class="text-2xl font-black tracking-wider text-white">TESLA<span class="text-blue-500 font-normal">USED</span><span class="text-xs bg-blue-500/10 text-blue-400 px-2 py-1 rounded mr-2 font-bold border border-blue-500/20">IL</span></span>
                 </div>
                 <div class="hidden md:flex space-x-reverse space-x-2">
-                    <button onclick="showTab('strategy')" class="nav-btn px-4 py-2 rounded-lg font-bold text-blue-600 bg-blue-50 transition">אסטרטגיית דגמים</button>
-                    <button onclick="showTab('finance')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition">מחשבון מימון ומבצעים</button>
-                    <button onclick="showTab('approval')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition">אישור אשראי וזכאות</button>
-                    <button onclick="showTab('inspection')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition">מעבדת בדיקות</button>
-                    <button onclick="showTab('tco')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition">אחזקה וחיסכון</button>
+                    <button onclick="showTab('comparison')" class="nav-btn px-4 py-2 rounded-lg font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 transition">השוואת דגמים מאומתים</button>
+                    <button onclick="showTab('pricing')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition">מחשבון מחירון ושמאות</button>
+                    <button onclick="showTab('warranty')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition">בריאות סוללה ואחריות</button>
+                    <button onclick="showTab('inspection')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition">פרוטוקול בדיקת שטח</button>
+                    <button onclick="showTab('ai-advisor')" class="nav-btn px-4 py-2 rounded-lg font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition flex items-center space-x-reverse space-x-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span>ייעוץ AI חכם</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Mobile Navigation (Bottom Bar) -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 flex justify-around py-3">
-        <button onclick="showTab('strategy')" class="mobile-nav-btn flex flex-col items-center text-blue-600 font-bold">
-            <span class="text-xs">דגמים</span>
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 z-50 flex justify-around py-3">
+        <button onclick="showTab('comparison')" class="mobile-nav-btn flex flex-col items-center text-blue-400 font-bold">
+            <span class="text-xs">השוואה</span>
         </button>
-        <button onclick="showTab('finance')" class="mobile-nav-btn flex flex-col items-center text-slate-500 font-semibold">
-            <span class="text-xs">מימון</span>
+        <button onclick="showTab('pricing')" class="mobile-nav-btn flex flex-col items-center text-slate-400 font-semibold">
+            <span class="text-xs">שמאות</span>
         </button>
-        <button onclick="showTab('approval')" class="mobile-nav-btn flex flex-col items-center text-slate-500 font-semibold">
-            <span class="text-xs">אישור</span>
+        <button onclick="showTab('warranty')" class="mobile-nav-btn flex flex-col items-center text-slate-400 font-semibold">
+            <span class="text-xs">אחריות</span>
         </button>
-        <button onclick="showTab('inspection')" class="mobile-nav-btn flex flex-col items-center text-slate-500 font-semibold">
+        <button onclick="showTab('inspection')" class="mobile-nav-btn flex flex-col items-center text-slate-400 font-semibold">
             <span class="text-xs">בדיקה</span>
         </button>
-        <button onclick="showTab('tco')" class="mobile-nav-btn flex flex-col items-center text-slate-500 font-semibold">
-            <span class="text-xs">אחזקה</span>
+        <button onclick="showTab('ai-advisor')" class="mobile-nav-btn flex flex-col items-center text-emerald-400 font-semibold">
+            <span class="text-xs font-bold text-emerald-400">יועץ AI</span>
         </button>
     </div>
 
@@ -71,581 +101,548 @@
         
         <!-- Welcome Hero Section -->
         <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">איך לקנות טסלה בישראל במינימום עלות?</h1>
-            <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto font-light">
-                מערכת קבלת החלטות המשלבת אסטרטגיות קנייה (חדש מול משומש), סימולציות מימון מאומתות, ופרוטוקול בקרת איכות הנדסי.
+            <div class="inline-flex items-center space-x-reverse space-x-2 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full mb-4">
+                <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                <span class="text-xs text-blue-400 font-semibold">טכנולוגיית AI בשירות רוכשי הרכב בישראל - שנת 2026</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">רכישת טסלה משומשת חכמה בישראל</h1>
+            <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto font-light">
+                מערכת השוואה הנדסית, מחירון שמאות אינטראקטיבי וייעוץ מבוסס בינה מלאכותית (Gemini) לניתוח עסקאות ובקרת איכות לפני סגירת מחיר.
             </p>
         </header>
 
-        <!-- SECTION 1: STRATEGY & MODELS -->
-        <section id="strategy" class="tab-content active space-y-8">
-            <!-- Strategic Insight Box -->
-            <div class="bg-gradient-to-l from-blue-50 to-indigo-50 border-r-4 border-blue-600 p-6 rounded-2xl tesla-shadow">
-                <h2 class="text-xl font-extrabold text-slate-900 mb-2">אסטרטגיית "מקסימום ערך" (2026)</h2>
-                <p class="text-slate-700 leading-relaxed text-sm md:text-base">
-                    הניתוח המבני מראה כי מסלול **הלוואת בלון** ל-48 חודשים בריבית **1.25% קבועה לא צמודה** מאפשר לכם ליהנות ממכונית חדשה מהניילונים בהחזר חודשי נמוך במיוחד השווה ערך לקניית רכב משומש קטן, ללא החשיפה לסיכוני שחיקת סוללה של רכבים ישנים יותר.
+        <!-- Toast Notifications Area -->
+        <div id="toast-container" class="fixed top-24 left-4 z-50 space-y-2 pointer-events-none max-w-sm"></div>
+
+        <!-- SECTION 1: VERIFIED MODELS COMPARISON -->
+        <section id="comparison" class="tab-content active space-y-8">
+            <div class="bg-gradient-to-l from-slate-900 to-blue-950/40 border border-blue-500/20 p-6 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-blue-400 mb-2">תובנת שוק: אסטרטגיית רכישת משומשת</h2>
+                <p class="text-slate-300 leading-relaxed text-sm md:text-base">
+                    השוק הישראלי מוצף בדגמי מודל 3 משנות 2021-2022. הדגמים המיוצרים ב**מפעל שנגחאי (סין)** מציגים איכות הרכבה ובידוד רעשים עדיפים משמעותית על פני הדגמים הראשונים שהגיעו מ**פרימונט (ארה"ב)**. שימו לב במיוחד לסוג הסוללה: דגמי ה-Standard Range משתמשים בסוללת **LFP** עמידה שניתן לטעון ל-100% מדי יום, בעוד דגמי ה-Long Range משתמשים בסוללת **NMC** המצריכה הגבלה ל-80% בשגרה למניעת שחיקה מואצת.
                 </p>
             </div>
 
-            <!-- Interactive Model Card Deck -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- User Configured Preset: Model 3 RWD Standard -->
-                <div class="bg-white border-2 border-emerald-500 rounded-2xl p-6 tesla-shadow relative overflow-hidden flex flex-col justify-between">
-                    <span class="absolute top-4 left-4 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full">התצורה שלך</span>
+            <!-- Interactive Model Selector & Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Model 3 SR+ (2021-2022) -->
+                <div class="tesla-card rounded-2xl p-6 flex flex-col justify-between">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-900 mt-2">Model 3 RWD Standard</h3>
-                        <p class="text-sm text-slate-500 mb-4">חדש בהזמנה (אספקה משוערת ספטמבר 2026)</p>
-                        <div class="space-y-2 mb-6 text-sm">
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">טווח מוצהר (WLTP)</span>
-                                <span class="font-bold text-slate-900">534 ק"מ</span>
-                            </div>
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">מחיר רכישה סופי</span>
-                                <span class="font-bold text-slate-900">₪194,378</span>
-                            </div>
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">מתוכם מיסים ואגרה</span>
-                                <span class="font-semibold text-slate-600">₪56,888</span>
-                            </div>
-                            <div class="flex justify-between pb-1">
-                                <span class="text-slate-500">מסלול מימון</span>
-                                <span class="font-bold text-emerald-600">בלון 1.25% - 48 חודשים</span>
-                            </div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-white">Model 3 SR+ / RWD</h3>
+                            <span class="bg-emerald-500/15 text-emerald-400 text-xs px-2.5 py-1 rounded-full border border-emerald-500/20">סוללת LFP</span>
                         </div>
-                    </div>
-                    <button onclick="showTab('finance'); setFinancePreset(194378, 23502, 48, 6.5, 3.0, true, 98000)" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-emerald-700 transition">טען תצורה זו למחשבון</button>
-                </div>
-
-                <!-- Model 3 LR RWD -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-6 tesla-shadow relative overflow-hidden flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-900 mt-2">Model 3 Long Range RWD</h3>
-                        <p class="text-sm text-slate-500 mb-4">חדש מהחברה (Highland)</p>
-                        <div class="space-y-2 mb-6 text-sm">
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">טווח מוצהר (WLTP)</span>
-                                <span class="font-bold text-slate-900">750 ק"מ</span>
-                            </div>
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">מחיר בסיס משוער</span>
-                                <span class="font-bold text-slate-900">₪228,928</span>
-                            </div>
-                            <div class="flex justify-between pb-1">
-                                <span class="text-slate-500">זכאות למימון 1.25%</span>
-                                <span class="font-bold text-green-600">כן - זכאי מלא</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="showTab('finance'); setFinancePreset(228928, 34300, 72, 6.5, 3.0, false, 0)" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 transition">חשב מסלול מימון לדגם זה</button>
-                </div>
-
-                <!-- Model 3 SR+ Used -->
-                <div class="bg-white border border-slate-200 rounded-2xl p-6 tesla-shadow flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-900">Model 3 Standard (2021)</h3>
-                        <p class="text-sm text-slate-500 mb-4">יד שנייה (ספיגת ירידת ערך מרבית)</p>
-                        <div class="space-y-2 mb-6 text-sm">
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">טווח ריאלי משוער</span>
-                                <span class="font-bold text-slate-900">~360-400 ק"מ</span>
-                            </div>
-                            <div class="flex justify-between border-b pb-1">
-                                <span class="text-slate-500">מחיר שוק ממוצע</span>
-                                <span class="font-bold text-slate-900">₪94,900 - ₪120,000</span>
-                            </div>
-                            <div class="flex justify-between pb-1">
-                                <span class="text-slate-500">ירידת ערך מהמקור</span>
-                                <span class="font-bold text-green-600">ספג כ-50% ירידה</span>
-                            </div>
-                        </div>
-                    </div>
-                    <button onclick="showTab('inspection'); selectUsedTab('used-battery')" class="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-xl hover:bg-slate-800 transition">איך לבדוק סוללה משומשת?</button>
-                </div>
-            </div>
-
-            <!-- Chart Section -->
-            <div class="bg-white p-6 rounded-2xl tesla-shadow border border-slate-100">
-                <h3 class="text-lg font-bold text-slate-900 mb-6">השוואת טווח נסיעה ריאלי (ק"מ) לעומת עלות רכישה (ש"ח)</h3>
-                <div class="chart-container">
-                    <canvas id="rangeChart"></canvas>
-                </div>
-                <p class="text-xs text-slate-500 mt-4 italic">הנתונים בגרף מבוססים על ממוצעי שוק בישראל שנת 2026, תוך שקלול טווחי נסיעה בתנאי אמת של חום ומזגן פעיל בישראל.</p>
-            </div>
-        </section>
-
-        <!-- SECTION 2: FINANCE CALCULATOR -->
-        <section id="finance" class="tab-content space-y-8">
-            <div class="bg-emerald-50 border-r-4 border-emerald-500 p-6 rounded-2xl tesla-shadow">
-                <h2 class="text-xl font-extrabold text-slate-900 mb-2">המבצע העדכני: 1.25% ריבית קבועה ללא הצמדה! (מאומת)</h2>
-                <p class="text-slate-700 leading-relaxed text-sm">
-                    טסלה מציעה בשיתוף **מימון ישיר** מסלול מימון מעולה ללא הפתעות אינפלציוניות: **1.25% ריבית קבועה נומינלית** ללא הצמדה כלל. המבצע תקף להזמנות חדשות עד ה-**30 ביוני 2026** ומאפשר פריסה של עד **72 תשלומים** במסלול רגיל, או פריסת בלון ל-**48 חודשים** עם החזר חודשי מופחת משמעותית ותשלום סופי בסוף התקופה.
-                </p>
-            </div>
-
-            <!-- Live Calculator and Simulator Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Calculator inputs (5 cols) -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl tesla-shadow border border-slate-100 space-y-6">
-                    <h3 class="text-xl font-bold text-slate-900 pb-2 border-b">מחשבון סימולציית אשראי ומימון</h3>
-                    
-                    <!-- Toggle: Spitzer vs Balloon -->
-                    <div class="space-y-2">
-                        <label class="text-sm font-semibold text-slate-700">סוג מסלול המימון:</label>
-                        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-xl">
-                            <button id="toggleSpitzer" onclick="setLoanType(false)" class="py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900">החזר מלא (שפיצר)</button>
-                            <button id="toggleBalloon" onclick="setLoanType(true)" class="py-2 text-xs font-bold rounded-lg transition bg-white text-slate-800 shadow-sm">הלוואת בלון (מסלול טסלה)</button>
-                        </div>
-                    </div>
-
-                    <!-- Input: Vehicle Price -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="priceInput">מחיר הרכב הכולל (כולל מיסים ואגרה):</label>
-                            <span id="priceVal" class="text-blue-600 font-bold">₪194,378</span>
-                        </div>
-                        <input type="range" id="priceInput" min="90000" max="320000" step="1000" value="194378" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    </div>
-
-                    <!-- Input: Down Payment (Equity) -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="equityInput">הון עצמי (מקדמה נדרשת):</label>
-                            <span id="equityVal" class="text-blue-600 font-bold">₪23,502</span>
-                        </div>
-                        <input type="range" id="equityInput" min="0" max="150000" step="500" value="23502" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    </div>
-
-                    <!-- Input: Period (Months) -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="periodInput">תקופת הלוואה:</label>
-                            <span id="periodVal" class="text-blue-600 font-bold">48 חודשים (4 שנים)</span>
-                        </div>
-                        <input type="range" id="periodInput" min="12" max="72" step="12" value="48" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    </div>
-
-                    <!-- Input: Balloon Amount (Only visible if Balloon is toggled) -->
-                    <div id="balloonSection" class="space-y-2 hidden">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="balloonInput">תשלום בלון סופי בסוף התקופה:</label>
-                            <span id="balloonVal" class="text-emerald-600 font-bold">₪98,000</span>
-                        </div>
-                        <input type="range" id="balloonInput" min="20000" max="150000" step="1000" value="98000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
-                        <p class="text-[11px] text-slate-500 italic">הערה: סכום הבלון הטיפוסי בטסלה עומד על כ-50% משווי הרכב בסוף 48 חודשים.</p>
-                    </div>
-
-                    <!-- Input: Annual Inflation Estimate -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="inflationInput">צפי אינפלציה שנתי (להשוואה מול מסלולים צמודים):</label>
-                            <span id="inflationVal" class="text-amber-600 font-bold">3.0% לשנה</span>
-                        </div>
-                        <input type="range" id="inflationInput" min="0" max="6" step="0.5" value="3.0" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    </div>
-
-                    <!-- Input: Fixed Bank Interest Rate -->
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-sm font-semibold text-slate-700">
-                            <label for="bankInterestInput">ריבית קבועה בנקאית אלטרנטיבית (ללא הצמדה):</label>
-                            <span id="bankInterestVal" class="text-slate-600 font-bold">6.5% לשנה</span>
-                        </div>
-                        <input type="range" id="bankInterestInput" min="4" max="10" step="0.25" value="6.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                    </div>
-                </div>
-
-                <!-- Live Results Comparison (7 cols) -->
-                <div class="lg:col-span-7 bg-slate-900 text-white p-6 rounded-2xl tesla-shadow flex flex-col justify-between space-y-6">
-                    <div>
-                        <div class="flex justify-between items-start border-b border-slate-700 pb-3">
-                            <div>
-                                <h3 class="text-xl font-bold">השוואת מסלולים בזמן אמת (כולל מקדמה)</h3>
-                                <p class="text-xs text-slate-400 mt-2">סכום המימון הנדרש: <span id="calcLoanSum" class="font-bold text-white">₪170,876</span> | מקדמה במזומן: <span id="outlayEquityLabel" class="font-bold text-emerald-400">₪23,502</span></p>
-                            </div>
-                            <div class="bg-emerald-950 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-left">
-                                <span class="text-[10px] text-slate-400 block">חיסכון משוער בדלק (מאתר טסלה)</span>
-                                <span class="text-sm font-bold text-emerald-400">- ₪725 / לחודש</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- Path A: New Tesla 1.25% Unlinked -->
-                        <div class="bg-slate-800 p-4 rounded-xl border-t-4 border-emerald-500 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-emerald-400 text-sm mb-1">מבצע טסלה 1.25%</h4>
-                                <p class="text-[10px] text-slate-400 mb-4" id="promoLabelSub">קבוע, לא צמוד (מימון ישיר)</p>
-                                
-                                <div class="space-y-3">
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">החזר חודשי קבוע</span>
-                                        <span id="teslaPromoPay" class="text-lg font-extrabold text-white">₪1,660</span>
-                                    </div>
-                                    <div id="balloonFinalDisplay" class="hidden">
-                                        <span class="text-[10px] text-amber-400 block">תשלום בלון סופי (חודש 48)</span>
-                                        <span id="teslaPromoBalloon" class="text-sm font-extrabold text-amber-400">₪98,000</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">סה"כ החזר מימון</span>
-                                        <span id="teslaPromoTotalPaid" class="text-base font-bold text-slate-300">₪177,680</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700/60">
-                                <span class="text-[10px] text-emerald-400 block font-semibold">סה"כ עלות כולל מקדמה</span>
-                                <span id="teslaPromoTotalOutlay" class="text-base font-extrabold text-emerald-400">₪201,182</span>
-                            </div>
-                        </div>
-
-                        <!-- Path B: Tesla 0% Linked (Historic Comparison) -->
-                        <div class="bg-slate-800 p-4 rounded-xl border-t-4 border-amber-500 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-amber-400 text-sm mb-1">טסלה 0% (צמוד מדד)</h4>
-                                <p class="text-[10px] text-slate-400 mb-4">מבוסס מדד מחירים</p>
-                                
-                                <div class="space-y-3">
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">החזר התחלתי</span>
-                                        <span id="teslaStartPay" class="text-lg font-extrabold text-white">₪2,703</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">החזר בסוף תקופה</span>
-                                        <span id="teslaEndPay" class="text-sm font-bold text-amber-400">₪3,227</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">סה"כ החזר מימון</span>
-                                        <span id="teslaTotalPaid" class="text-base font-bold text-slate-300">₪213,012</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700/60">
-                                <span class="text-[10px] text-amber-400 block font-semibold">סה"כ עלות כולל מקדמה</span>
-                                <span id="teslaTotalOutlay" class="text-base font-extrabold text-amber-400">₪236,514</span>
-                            </div>
-                        </div>
-
-                        <!-- Path C: Fixed Bank Loan -->
-                        <div class="bg-slate-800 p-4 rounded-xl border-t-4 border-slate-400 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-slate-300 text-sm mb-1">בנקאי קבוע (לא צמוד)</h4>
-                                <p class="text-[10px] text-slate-400 mb-4">ריבית שוק טיפוסית + עמלה</p>
-                                
-                                <div class="space-y-3">
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">החזר חודשי קבוע</span>
-                                        <span id="bankPay" class="text-lg font-extrabold text-white">₪3,277</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">עמלת פתיחת תיק</span>
-                                        <span class="text-[11px] font-semibold text-slate-300">₪490 - ₪990</span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-slate-400 block">סה"כ החזר מימון</span>
-                                        <span id="bankTotalPaid" class="text-base font-bold text-slate-300">₪235,944</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-4 pt-3 border-t border-slate-700/60">
-                                <span class="text-[10px] text-slate-300 block font-semibold">סה"כ עלות כולל מקדמה</span>
-                                <span id="bankTotalOutlay" class="text-base font-extrabold text-slate-300">₪259,446</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Chart of Cumulative Debt Over Time -->
-                    <div class="bg-slate-800 p-4 rounded-xl">
-                        <h4 class="text-xs font-bold text-slate-400 mb-2">גרף סימולציה: הוצאה כספית מצטברת מהכיס (כולל מקדמה משולמת בחודש 0)</h4>
-                        <div class="chart-container" style="height: 180px;">
-                            <canvas id="amortizationChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: CREDIT APPROVAL & ELIGIBILITY -->
-        <section id="approval" class="tab-content space-y-8">
-            <div class="bg-slate-900 text-white p-6 rounded-2xl tesla-shadow border border-slate-800">
-                <h2 class="text-2xl font-extrabold mb-2 text-blue-400">איך תקבלו אישור למימון טסלה?</h2>
-                <p class="text-slate-300 text-sm leading-relaxed">
-                    תהליך אישור האשראי של **מימון ישיר** (הגוף המממן הרשמי של טסלה בישראל) נעשה בצורה דיגיטלית מהירה, אך הוא מתבסס על מספר פרמטרים קשיחים של יציבות פיננסית והיסטוריית תשלומים.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Checklist / Process -->
-                <div class="bg-white p-6 rounded-2xl tesla-shadow border border-slate-100 space-y-6">
-                    <h3 class="text-xl font-bold text-slate-900 pb-2 border-b">4 הקריטריונים המרכזיים לאישור</h3>
-                    
-                    <div class="space-y-4">
-                        <div class="flex items-start space-x-reverse space-x-3">
-                            <div class="bg-blue-50 text-blue-600 rounded-full p-2 font-bold text-sm w-8 h-8 flex items-center justify-center shrink-0">1</div>
-                            <div>
-                                <h4 class="font-bold text-slate-900">יחס החזר חודשי (הכנסה מול החזר)</h4>
-                                <p class="text-sm text-slate-600 mt-0.5">הכלל הפיננסי קובע כי ההחזר החודשי על הרכב לא יעלה על **25% עד 30%** מההכנסה הפנויה של משק הבית (נטו). לדוגמה: להחזר הבלון של ₪1,660, מומלץ להציג הכנסה חודשית נטו של לפחות ₪6,500-8,000.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-reverse space-x-3">
-                            <div class="bg-blue-50 text-blue-600 rounded-full p-2 font-bold text-sm w-8 h-8 flex items-center justify-center shrink-0">2</div>
-                            <div>
-                                <h4 class="font-bold text-slate-900">דירוג האשראי האישי שלכם (בנק ישראל / BDI)</h4>
-                                <p class="text-sm text-slate-600 mt-0.5">מימון ישיר תבקש את הסכמתכם למשיכת נתוני אשראי ממאגר בנק ישראל. דירוג אשראי ירוק וגבוה (מעל 700 בציון קפטן קרדיט / FICO-BDI) מבטיח אישור מיידי ודיגיטלי בתוך 30 דקות.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-reverse space-x-3">
-                            <div class="bg-blue-50 text-blue-600 rounded-full p-2 font-bold text-sm w-8 h-8 flex items-center justify-center shrink-0">3</div>
-                            <div>
-                                <h4 class="font-bold text-slate-900">ותק בעבודה ויציבות תעסוקתית</h4>
-                                <p class="text-sm text-slate-600 mt-0.5">העדפה ברורה לשכירים עם ותק של חצי שנה ומעלה באותו מקום עבודה, או עצמאיים עם ותק של שנה לפחות בעסק ואישור רו"ח.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start space-x-reverse space-x-3">
-                            <div class="bg-blue-50 text-blue-600 rounded-full p-2 font-bold text-sm w-8 h-8 flex items-center justify-center shrink-0">4</div>
-                            <div>
-                                <h4 class="font-bold text-slate-900">ביטחונות ושעבוד הרכב</h4>
-                                <p class="text-sm text-slate-600 mt-0.5">הרכב עצמו נרשם על שמכם אך משועבד לטובת "מימון ישיר" (ברשם המשכונות ובמשרד הרישוי) עד לסיום מלא של התשלומים. חובה לבטח את הרכב בביטוח מקיף עם סעיף שעבוד למממן.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Documents Needed & Practical Steps -->
-                <div class="bg-white p-6 rounded-2xl tesla-shadow border border-slate-100 space-y-6">
-                    <h3 class="text-xl font-bold text-slate-900 pb-2 border-b">אילו מסמכים עליכם להכין מראש?</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-center space-x-reverse space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <input type="checkbox" id="doc1" class="w-5 h-5 text-blue-600 border-slate-300 rounded cursor-pointer">
-                            <label for="doc1" class="text-sm text-slate-700 font-medium select-none cursor-pointer"><strong>צילום תעודת זהות</strong> (כולל ספח מעודכן)</label>
-                        </li>
-                        <li class="flex items-center space-x-reverse space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <input type="checkbox" id="doc2" class="w-5 h-5 text-blue-600 border-slate-300 rounded cursor-pointer">
-                            <label for="doc2" class="text-sm text-slate-700 font-medium select-none cursor-pointer"><strong>3 תלושי שכר אחרונים</strong> (לעצמאיים: שומה שנתית אחרונה או אישור הכנסות מרואה חשבון)</label>
-                        </li>
-                        <li class="flex items-center space-x-reverse space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <input type="checkbox" id="doc3" class="w-5 h-5 text-blue-600 border-slate-300 rounded cursor-pointer">
-                            <label for="doc3" class="text-sm text-slate-700 font-medium select-none cursor-pointer"><strong>תדפיס עו"ש מלא ל-3 חודשים אחרונים</strong> (לוודא שאין החזרות צ'קים או חריגות קיצוניות)</label>
-                        </li>
-                        <li class="flex items-center space-x-reverse space-x-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <input type="checkbox" id="doc4" class="w-5 h-5 text-blue-600 border-slate-300 rounded cursor-pointer">
-                            <label for="doc4" class="text-sm text-slate-700 font-medium select-none cursor-pointer"><strong>ריכוז יתרות אשראי והלוואות קיימות</strong> (אם ישנן)</label>
-                        </li>
-                    </ul>
-
-                    <div class="bg-amber-50 border-r-4 border-amber-500 p-4 rounded-xl text-sm text-slate-800">
-                        <strong class="block mb-1">💡 טיפ זהב לחיסכון בזמן:</strong>
-                        לפני ביצוע ההזמנה הדיגיטלית באתר טסלה, מומלץ להיכנס לאתר בנק ישראל (או דרך אפליקציות כמו קפטן קרדיט) ולהפיק **"דו"ח ריכוז נתונים אישי"** בחינם. בדיקה זו אינה משפיעה על הדירוג ותיתן לכם תמונה מדויקת על מצבכם ותאפשר לכם לתקן טעויות ברישום במידה וישנן.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: INSPECTION LAB & PROTOCOLS -->
-        <section id="inspection" class="tab-content space-y-8">
-            <div class="bg-green-50 border-r-4 border-green-600 p-6 rounded-2xl tesla-shadow">
-                <h2 class="text-xl font-extrabold text-slate-900 mb-2">מעבדת בדיקות הנדסיות</h2>
-                <p class="text-slate-700 leading-relaxed text-sm">
-                    שלא כמו ברכבי בנזין מסורתיים, הבדיקה הטכנולוגית של מערכות המתח הגבוה והסוללה של טסלה קובעת מעל 70% משווי הרכב ואיכותו. יש להפריד בין פרוטוקול קבלת רכב חדש לבין בדיקת רכב יד שנייה.
-                </p>
-            </div>
-
-            <!-- Tab Buttons for New/Used Checklists -->
-            <div class="flex space-x-reverse space-x-4 border-b border-slate-200">
-                <button onclick="selectUsedTab('new-checklist')" id="btn-new-checklist" class="used-tab-btn pb-3 text-lg font-bold text-blue-600 border-b-2 border-blue-600">צ'קליסט יום מסירה (רכב חדש)</button>
-                <button onclick="selectUsedTab('used-battery')" id="btn-used-battery" class="used-tab-btn pb-3 text-lg font-semibold text-slate-500 hover:text-blue-600">בדיקת סוללה ושלדה (רכב משומש)</button>
-            </div>
-
-            <!-- TAB 4A: NEW CHECKLIST -->
-            <div id="new-checklist" class="used-tab-content space-y-6">
-                <div class="bg-white p-6 rounded-2xl tesla-shadow border border-slate-100">
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">רשימת בדיקה אינטראקטיבית ליום קבלת הטסלה:</h3>
-                    <p class="text-sm text-slate-500 mb-6">סמנו את הסעיפים לאחר ביצוע הבדיקה במרכז המסירה בארץ:</p>
-                    
-                    <div id="interactiveChecklist" class="space-y-4">
-                        <!-- Checklist JS Populated -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 4B: USED BATTERY -->
-            <div id="used-battery" class="used-tab-content hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Diagnostic Protocol -->
-                    <div class="bg-white p-6 rounded-2xl tesla-shadow border border-slate-100 space-y-6">
-                        <h3 class="text-xl font-bold text-slate-900">פרוטוקול בדיקת בריאות סוללה (SoH)</h3>
+                        <p class="text-xs text-slate-400 mb-4 mt-1">מיוצר בעיקר בשנגחאי (סין) או ארה"ב</p>
                         
-                        <div class="space-y-4">
-                            <div class="p-4 bg-slate-50 rounded-xl border-r-4 border-blue-500">
-                                <h4 class="font-bold text-slate-900">1. בדיקת AVILOO FLASH המהירה</h4>
-                                <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                                    בדיקה ממוחשבת בת 3 דקות בלבד. מחברים את מכשיר ה-AVILOO Box לשקע ה-OBD של הטסלה (מופעל במצב נסיעה קצרצר עם חגורות הדוקות) ומקבלים דוח מפורט על מצב בריאות התאים. הבדיקה ניתנת לביצוע ברשתות מורשות כמו **טכנו טסט** ומוכרת על ידי חברות הביטוח ולוי יצחק.
-                                </p>
+                        <div class="space-y-2.5 mb-6 text-sm">
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מוצהר (חדש)</span>
+                                <span class="font-bold text-slate-200">448 ק"מ</span>
                             </div>
-
-                            <div class="p-4 bg-slate-50 rounded-xl border-r-4 border-emerald-500">
-                                <h4 class="font-bold text-slate-900">2. שלדת אלומיניום ועבר ביטוחי</h4>
-                                <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                                    רכבי טסלה בנויים על שלדת אלומיניום מורכבת. תיקוני פחחות בטסלה יקרים באופן קיצוני ומצריכים כיול מצלמות וחיישנים עדינים. חובה להוציא **דו"ח סליקה ביטוחי** על מנת לוודא שלא קיימות ירידות ערך סמויות או פגיעות בשלדה התחתונה המגנה על הסוללה.
-                                </p>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח ריאלי בקיץ ישראלי</span>
+                                <span class="font-bold text-amber-400">~330-360 ק"מ</span>
                             </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מחירים מאומת בשוק</span>
+                                <span class="font-bold text-slate-200">₪95,000 - ₪120,000</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">אורך אחריות סוללה</span>
+                                <span class="font-semibold text-slate-300">8 שנים / 160,000 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-blue-400">
+                                <span>המלצת טעינה יומית</span>
+                                <span class="font-bold">100% (מומלץ לכיול)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loadModelToPricing(110000, 160000)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition">טען מחשבון שמאות לדגם זה</button>
+                </div>
 
-                            <div class="p-4 bg-slate-50 rounded-xl border-r-4 border-slate-800">
-                                <h4 class="font-bold text-slate-900">3. שחיקת צמיגים ובלמים</h4>
-                                <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                                    בגלל המשקל הכבד והמומנט המיידי, טסלות שוחקות צמיגים במהירות רבה. תקן הבטיחות של טסלה לרכב משומש תקין מחייב עומק חריץ מינימלי של **4 מ"מ** (5/32 אינץ') לצמיג ועובי רפידת בלם של לפחות 6 מ"מ.
-                                </p>
+                <!-- Model 3 LR (2021-2022) -->
+                <div class="tesla-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-white">Model 3 Long Range</h3>
+                            <span class="bg-blue-500/15 text-blue-400 text-xs px-2.5 py-1 rounded-full border border-blue-500/20">סוללת NMC</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4 mt-1">הנעה כפולה (AWD), סוללה גדולה</p>
+                        
+                        <div class="space-y-2.5 mb-6 text-sm">
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מוצהר (חדש)</span>
+                                <span class="font-bold text-slate-200">580-614 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח ריאלי בקיץ ישראלי</span>
+                                <span class="font-bold text-amber-400">~440-480 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מחירים מאומת בשוק</span>
+                                <span class="font-bold text-slate-200">₪120,000 - ₪145,000</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">אורך אחריות סוללה</span>
+                                <span class="font-semibold text-slate-300">8 שנים / 192,000 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-amber-500">
+                                <span>המלצת טעינה יומית</span>
+                                <span class="font-bold">מומלץ להגביל ל-80%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loadModelToPricing(132000, 192000)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition">טען מחשבון שמאות לדגם זה</button>
+                </div>
+
+                <!-- Model Y LR (2022-2023) -->
+                <div class="tesla-card rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-white">Model Y Long Range</h3>
+                            <span class="bg-blue-500/15 text-blue-400 text-xs px-2.5 py-1 rounded-full border border-blue-500/20">סוללת NMC</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-4 mt-1">קרוסאובר משפחתי מרווח, ייצור ברלין/שנגחאי</p>
+                        
+                        <div class="space-y-2.5 mb-6 text-sm">
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מוצהר (חדש)</span>
+                                <span class="font-bold text-slate-200">533 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח ריאלי בקיץ ישראלי</span>
+                                <span class="font-bold text-amber-400">~380-410 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">טווח מחירים מאומת בשוק</span>
+                                <span class="font-bold text-slate-200">₪160,000 - ₪190,000</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">אורך אחריות סוללה</span>
+                                <span class="font-semibold text-slate-300">8 שנים / 192,000 ק"מ</span>
+                            </div>
+                            <div class="flex justify-between text-xs text-amber-500">
+                                <span>המלצת טעינה יומית</span>
+                                <span class="font-bold">מומלץ להגביל ל-80%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loadModelToPricing(175000, 192000)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition">טען מחשבון שמאות לדגם זה</button>
+                </div>
+            </div>
+
+            <!-- Analytical Chart Section -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                <h3 class="text-lg font-bold text-white mb-6">מפת שוק: מחיר שוק ריאלי לעומת טווח נסיעה אמיתי בקיץ</h3>
+                <div class="chart-container">
+                    <canvas id="marketChart"></canvas>
+                </div>
+                <p class="text-xs text-slate-400 mt-4 italic">הנתונים בגרף משקפים מחירים ריאליים ממוצעים בלוחות השוק בישראל בשנת 2026, ומביאים בחשבון הפחתה של כ-15% מהטווח הרשמי עקב שימוש מוגבר במזגן בתנאי האקלים המקומיים.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: LEVI ITZHAK ADJUSTMENT CALCULATOR -->
+        <section id="pricing" class="tab-content space-y-8">
+            <div class="bg-blue-500/10 border border-blue-500/20 p-6 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-blue-400 mb-2">סימולטור שמאות וירידת ערך (לפי עקרונות לוי יצחק)</h2>
+                <p class="text-slate-300 leading-relaxed text-sm">
+                    שוק הרכב המשומש בישראל נשען בעיקר על מחירון לוי יצחק. עבור רכב חשמלי, ישנם משקלים קשיחים במיוחד לקילומטראז' שנתי חריג (מעל 20,000 ק"מ בשנה) ולסוג הבעלות הקודמת (ליסינג/חברה מורידים משמעותית את הערך). השתמש בסרגלים למטה כדי לקבל את מחיר היעד הריאלי למשא ומתן.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Calculator inputs (6 cols) -->
+                <div class="lg:col-span-6 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                    <h3 class="text-xl font-bold text-white pb-2 border-b border-slate-800">נתוני הרכב המוצע</h3>
+                    
+                    <!-- Input: Base Price -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-semibold text-slate-300">
+                            <label for="basePriceInput">מחיר מחירון בסיס (ללא שקלול):</label>
+                            <span id="basePriceVal" class="text-blue-400 font-bold">₪120,000</span>
+                        </div>
+                        <input type="range" id="basePriceInput" min="70000" max="250000" step="2000" value="120000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <!-- Input: Hand -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-300 block">מספר בעלויות (יד):</label>
+                        <div class="grid grid-cols-4 gap-2 bg-slate-800 p-1 rounded-xl">
+                            <button onclick="setHand(1)" id="btnHand1" class="hand-btn py-2 text-xs font-bold rounded-lg transition bg-blue-600 text-white">יד 1</button>
+                            <button onclick="setHand(2)" id="btnHand2" class="hand-btn py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">יד 2</button>
+                            <button onclick="setHand(3)" id="btnHand3" class="hand-btn py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">יד 3</button>
+                            <button onclick="setHand(4)" id="btnHand4" class="hand-btn py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white">יד 4+</button>
+                        </div>
+                    </div>
+
+                    <!-- Input: Mileage (KM) -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-semibold text-slate-300">
+                            <label for="kmInput">קילומטראז' נוכחי:</label>
+                            <span id="kmVal" class="text-blue-400 font-bold">60,000 ק"מ</span>
+                        </div>
+                        <input type="range" id="kmInput" min="5000" max="220000" step="5000" value="60000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <!-- Input: Age in Months -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-semibold text-slate-300">
+                            <label for="ageInput">חודשים על הכביש:</label>
+                            <span id="ageVal" class="text-blue-400 font-bold">36 חודשים (3 שנים)</span>
+                        </div>
+                        <input type="range" id="ageInput" min="6" max="72" step="6" value="36" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <!-- Input: Past Ownership Type -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-300 block">מקוריות הרכב (בעלות קודמת):</label>
+                        <select id="ownershipInput" class="w-full bg-slate-800 border border-slate-700 text-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                            <option value="private" selected>פרטי לחלוטין (ללא הפחתה)</option>
+                            <option value="single_lease">ליסינג נהג יחיד (מימון/תפעולי) - הפחתה של ~14%</option>
+                            <option value="company_lease">ליסינג חברה (מרובה נהגים) - הפחתה של ~22%</option>
+                            <option value="company">בעלות חברה/עסקי - הפחתה של ~18%</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Live Results Comparison (6 cols) -->
+                <div class="lg:col-span-6 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white pb-2 border-b border-slate-800">דוח שמאות מחושב מומלץ לקנייה</h3>
+                        <p class="text-xs text-slate-400 mt-2">התוצאה שלהלן משקללת הפחתות קילומטראז' חריג (מעל 20,000 ק"מ בשנה גורר קנס של 1.5% לכל 10,000 ק"מ עודפים), הפחתות יד והפחתות מקוריות.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Final Evaluated Price Box -->
+                        <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 text-center space-y-2">
+                            <span class="text-xs text-slate-400 block uppercase tracking-wider">שווי שוק ריאלי משוקלל</span>
+                            <div id="finalPriceDisplay" class="text-4xl md:text-5xl font-black text-emerald-400">₪114,200</div>
+                            <span id="priceDiffPercent" class="text-xs font-semibold text-red-400 block">הפחתה של -4.83% מהמחירון הבסיסי</span>
+                        </div>
+
+                        <!-- Price breakdown details -->
+                        <div class="space-y-2.5 text-sm">
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">הפחתת קילומטראז' (קצב נסועה)</span>
+                                <span id="kmPenaltyDisplay" class="font-bold text-slate-200">₪0 (קצב תקין)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">הפחתה בגין מספר בעלויות (יד)</span>
+                                <span id="handPenaltyDisplay" class="font-bold text-slate-200">₪0 (ללא הפחתה)</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800 pb-1.5">
+                                <span class="text-slate-400">הפחתת מקוריות (סוג בעלות)</span>
+                                <span id="ownershipPenaltyDisplay" class="font-bold text-slate-200">₪0</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Battery Health Degradation Simulator -->
-                    <div class="bg-slate-900 text-white p-6 rounded-2xl tesla-shadow flex flex-col justify-between space-y-6">
-                        <div>
-                            <h3 class="text-xl font-bold border-b border-slate-700 pb-3">סימולטור הערכת שחיקת סוללה טבעית</h3>
-                            <p class="text-xs text-slate-400 mt-2">הזן את נתוני הרכב המשומש לקבלת הערכה סטטיסטית של בריאות הסוללה (State of Health - SoH):</p>
+                    <!-- Action: Analyze Deal with AI button -->
+                    <button onclick="analyzeActiveDeal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-4 rounded-xl shadow-lg hover:shadow-emerald-500/20 transition flex items-center justify-center space-x-reverse space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span>נתח עסקה זו באמצעות AI יועץ</span>
+                    </button>
+
+                    <div class="bg-blue-500/5 border border-blue-500/10 p-4 rounded-xl text-xs text-slate-400 leading-relaxed space-y-1.5">
+                        <strong class="text-blue-400 block">💡 טיפ למיקוח בשטח:</strong>
+                        <span>אם המוכר דורש "מחיר מחירון יבש", הצג לו את הנתונים המשוקללים. רכב חשמלי עם קילומטראז' גבוה מחמיר את שחיקת הסוללה והמתלים הרבה יותר מרכב בנזין, ולכן מתווה ירידת הערך שלו בגין קילומטראז' מואץ הוא מנוף מיקוח לגיטימי לחלוטין.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: BATTERY & WARRANTY TRACKER -->
+        <section id="warranty" class="tab-content space-y-8">
+            <div class="bg-blue-500/10 border border-blue-500/20 p-6 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-blue-400 mb-2">מעקב אחריות יצרן ובריאות סוללה (SoH)</h2>
+                <p class="text-slate-300 leading-relaxed text-sm">
+                    החשש הגדול ביותר בקניית טסלה משומשת הוא אובדן אחריות על הסוללה ומנוע ההנעה (Drive Unit). טסלה מעניקה אחריות מקיפה של **8 שנים** מתאריך העלייה המקורי לכביש. מגבלת הקילומטראז' משתנה לפי סוג הדגם (160,000 ק"מ לדגמי ה-LFP הבסיסיים, ו-192,000 ק"מ לדגמי ה-Long Range וה-Performance).
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Parameters form (5 cols) -->
+                <div class="lg:col-span-5 bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6">
+                    <h3 class="text-lg font-bold text-white pb-2 border-b border-slate-800">מחשבון מצב אחריות</h3>
+
+                    <!-- Select Model for Warranty Type -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-300 block">סוג אחריות לפי דגם:</label>
+                        <select id="warrantyModelSelect" onchange="updateWarrantyTracker()" class="w-full bg-slate-800 border border-slate-700 text-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                            <option value="160000" selected>Model 3 SR+ (מגבלת 160,000 ק"מ)</option>
+                            <option value="192000">Model 3 Long Range / Performance (מגבלת 192,000 ק"מ)</option>
+                            <option value="192000">Model Y Long Range (מגבלת 192,000 ק"מ)</option>
+                            <option value="160000">Model Y RWD (מגבלת 160,000 ק"מ)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input: Current Mileage -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm font-semibold text-slate-300">
+                            <label for="warrantyKmInput">קילומטראז' הרכב הנוכחי:</label>
+                            <span id="warrantyKmVal" class="text-blue-400 font-bold">75,000 ק"מ</span>
+                        </div>
+                        <input type="range" id="warrantyKmInput" min="10000" max="220000" step="5000" value="75000" oninput="updateWarrantyTracker()" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <!-- Input: Registration Year -->
+                    <div class="space-y-2">
+                        <label class="text-sm font-semibold text-slate-300 block">שנת עלייה לכביש:</label>
+                        <select id="warrantyYearInput" onchange="updateWarrantyTracker()" class="w-full bg-slate-800 border border-slate-700 text-slate-200 rounded-xl p-3 text-sm focus:outline-none focus:border-blue-500">
+                            <option value="2021">2021 (כבר על הכביש כ-5 שנים)</option>
+                            <option value="2022" selected>2022 (כבר על הכביש כ-4 שנים)</option>
+                            <option value="2023">2023 (כבר על הכביש כ-3 שנים)</option>
+                            <option value="2024">2024 (כבר על הכביש כ-2 שנים)</option>
+                            <option value="2025">2025 (כבר על הכביש כשנה)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Status Screen (7 cols) -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between space-y-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-white pb-2 border-b border-slate-800">דוח אחריות ובריאות סוללה משוערת (SoH)</h3>
+                        <p class="text-xs text-slate-400 mt-1">חישוב פחת הסוללה מתבסס על שילוב של בלאי זמן ובלאי נסועה ממוצעת בטכנולוגיית סוללה זו.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Remaining Warranty Box -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                            <span class="text-[11px] text-slate-400 block mb-1">יתרת אחריות סוללה ומנוע</span>
+                            <div id="warrantyMonthsLeft" class="text-2xl font-black text-blue-400">48 חודשים</div>
+                            <div id="warrantyKmLeft" class="text-sm text-slate-300 mt-1">או 85,000 ק"מ נותרים</div>
                         </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-sm font-semibold text-slate-300 block mb-1">שנתון הרכב:</label>
-                                <select id="batteryYear" class="w-full bg-slate-800 text-white border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-blue-500">
-                                    <option value="2024">2024 (בן שנתיים)</option>
-                                    <option value="2023">2023 (בן 3 שנים)</option>
-                                    <option value="2022" selected>2022 (בן 4 שנים)</option>
-                                    <option value="2021">2021 (בן 5 שנים)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="text-sm font-semibold text-slate-300 block mb-1">קילומטראז' נוכחי (ק"מ):</label>
-                                <div class="flex justify-between text-xs text-slate-400 mb-1">
-                                    <span>0 ק"מ</span>
-                                    <span id="kmLabel" class="text-blue-400 font-bold">80,000 ק"מ</span>
-                                    <span>200,000 ק"מ</span>
-                                </div>
-                                <input type="range" id="batteryKm" min="5000" max="200000" step="5000" value="80000" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                            </div>
+                        <!-- Simulated SoH Box -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-col justify-between">
+                            <span class="text-[11px] text-slate-400 block mb-1">בריאות סוללה משוערת (SoH)</span>
+                            <div id="sohDisplay" class="text-2xl font-black text-emerald-400">~91.2%</div>
+                            <div id="sohDesc" class="text-[10px] text-slate-400 mt-1">ירידת קיבולת טבעית ותקינה לשנתון</div>
                         </div>
+                    </div>
 
-                        <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 text-center">
-                            <span class="text-xs text-slate-400 block mb-1">הערכת קיבולת סוללה נוכחית (SoH)</span>
-                            <div id="sohResult" class="text-4xl font-extrabold text-green-400">89.5%</div>
-                            <p class="text-xs text-slate-400 mt-3" id="sohVerdict">מצב סוללה מצוין. הירידה הגדולה ביותר מתרחשת ב-30k הק"מ הראשונים ומתייצבת לאחר מכן.</p>
+                    <!-- Doughnut chart representing Remaining vs Used Warranty -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+                        <h4 class="text-xs font-bold text-slate-400 mb-2">ניצול קילומטראז' אחריות יצרן</h4>
+                        <div class="chart-container" style="height: 120px;">
+                            <canvas id="warrantyChart"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 5: TCO & TOTAL SAVINGS CALCULATOR -->
-        <section id="tco" class="tab-content space-y-8">
-            <div class="bg-blue-50 border-r-4 border-blue-500 p-6 rounded-2xl tesla-shadow">
-                <h2 class="text-xl font-extrabold text-slate-900 mb-2">עלות בעלות כוללת (TCO) וחסכון שוטף</h2>
-                <p class="text-slate-700 leading-relaxed text-sm">
-                    כדי לחסוך באמת, החשבון הנכון אינו כמה הרכב עולה בקנייה, אלא כמה הוא עולה לאורך כל חודשי הבעלות. התקנת תשתית טעינה ביתית נכונה וניהול נכון של סקרי שוק בביטוח המקיף הם מפתחות הذهب לחיסכון של אלפי שקלים בשנה.
+        <!-- SECTION 4: INTERACTIVE CHECKLIST -->
+        <section id="inspection" class="tab-content space-y-8">
+            <div class="bg-blue-500/10 border border-blue-500/20 p-6 rounded-2xl">
+                <h2 class="text-xl font-extrabold text-blue-400 mb-2">פרוטוקול בדיקת טסלה בשטח (צ'קליסט הנדסי)</h2>
+                <p class="text-slate-300 leading-relaxed text-sm">
+                    אל תסמוך רק על בדיקה של מכון רכב רגיל. מכונים רבים בארץ אינם מכירים את הרכיבים הייחודיים של טסלה. השתמש בצ'קליסט המקצועי הזה בעת בחינת הרכב הפיזית אצל המוכר.
                 </p>
             </div>
 
-            <!-- Cost Breakdown & Savings Simulator -->
+            <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                <h3 class="text-xl font-bold text-white mb-4">סמנו את הסעיפים שנבדקו בהצלחה:</h3>
+                
+                <div class="space-y-4">
+                    <!-- Item 1 -->
+                    <div class="flex items-start space-x-reverse space-x-3 p-4 bg-slate-950 rounded-xl hover:border-blue-500/50 border border-slate-800 transition cursor-pointer" onclick="toggleCheck('chkSuspension')">
+                        <input type="checkbox" id="chkSuspension" class="mt-1 w-5 h-5 text-blue-500 border-slate-700 bg-slate-800 rounded focus:ring-blue-500 cursor-pointer">
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-0.5">מערכת מתלים (מחלה מוכרת)</span>
+                            <p class="text-sm text-slate-300 font-medium">בצע נסיעת מבחן קצרה על פסי האטה. הקשב היטב לרעשי חריקה/מתכת מצד הגלגלים הקדמיים. מדובר בבלאי נפוץ ביותר בזרועות המתלה העליונות (Control Arms) בדגמי 2021-2022, שעלותו מחוץ לאחריות כ-3,000-4,000 ₪.</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="flex items-start space-x-reverse space-x-3 p-4 bg-slate-950 rounded-xl hover:border-blue-500/50 border border-slate-800 transition cursor-pointer" onclick="toggleCheck('chkGlass')">
+                        <input type="checkbox" id="chkGlass" class="mt-1 w-5 h-5 text-blue-500 border-slate-700 bg-slate-800 rounded focus:ring-blue-500 cursor-pointer">
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-0.5">שלמות גג זכוכית ופנסים</span>
+                            <p class="text-sm text-slate-300 font-medium">עבור בעיניים לאורך כל גג הזכוכית וחפש סדקים קטנים (אבנים קטנות בכביש מהיר לעיתים סודקות את הגג ללא ידיעת המוכר). כמו כן, בדוק אם יש הצטברות מים/אדים בפנסים האחוריים (תופעת איטום לקויה מוכרת בטסלה).</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="flex items-start space-x-reverse space-x-3 p-4 bg-slate-950 rounded-xl hover:border-blue-500/50 border border-slate-800 transition cursor-pointer" onclick="toggleCheck('chkJack')">
+                        <input type="checkbox" id="chkJack" class="mt-1 w-5 h-5 text-blue-500 border-slate-700 bg-slate-800 rounded focus:ring-blue-500 cursor-pointer">
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-0.5">פגיעות גחון ומארז סוללה</span>
+                            <p class="text-sm text-slate-300 font-medium">התכופף מתחת לרכב או העלה אותו על ליפט. ודא שאין שריטות עמוקות או שקעים במארז האלומיניום התחתון של הסוללה. פגיעות חדות במארז עלולות לבטל את אחריות היצרן של טסלה על הסוללה לחלוטין!</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="flex items-start space-x-reverse space-x-3 p-4 bg-slate-950 rounded-xl hover:border-blue-500/50 border border-slate-800 transition cursor-pointer" onclick="toggleCheck('chkService')">
+                        <input type="checkbox" id="chkService" class="mt-1 w-5 h-5 text-blue-500 border-slate-700 bg-slate-800 rounded focus:ring-blue-500 cursor-pointer">
+                        <div class="flex-1">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-0.5">כניסה למצב שירות (Service Mode)</span>
+                            <p class="text-sm text-slate-300 font-medium">במסך הראשי: נווט אל 'תוכנה' (Software) -> לחץ לחיצה ארוכה על כיתוב הדגם (למשל 'Model 3') למשך 3 שניות -> שחרר והקלד את המילה <strong>service</strong> בתיבת הטקסט שתפתח. נווט לתפריט Battery כדי לבדוק קודי תקלות (Alerts) פעילים במערכת הקירור או הסוללה.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: GEMINI AI SMART ADVISOR -->
+        <section id="ai-advisor" class="tab-content space-y-8">
+            <div class="bg-gradient-to-l from-slate-900 to-emerald-950/40 border border-emerald-500/30 p-6 rounded-2xl ai-glow flex flex-col md:flex-row items-center justify-between">
+                <div class="space-y-2 mb-4 md:mb-0">
+                    <h2 class="text-2xl font-extrabold text-emerald-400 flex items-center space-x-reverse space-x-2">
+                        <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                        <span>ייעוץ AI חכם מבוסס Gemini</span>
+                    </h2>
+                    <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
+                        ברוך הבא למערכת הייעוץ הכלכלית וההנדסית שלך. כאן תוכל לבצע ניתוח מיידי של כל עסקה בשוק המשומשות, להעלות צילומים של נזקים פיזיים לצורך הערכת עלויות תיקון, או לשוחח חופשית עם מומחה טכני לרכבי טסלה.
+                    </p>
+                </div>
+                <div class="flex space-x-reverse space-x-2 shrink-0">
+                    <span class="bg-emerald-500/10 text-emerald-400 text-xs px-3 py-1.5 rounded-full border border-emerald-500/20 font-bold">מודל פעיל: Gemini 3 Flash</span>
+                </div>
+            </div>
+
+            <!-- Main Layout of AI Tools -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Breakdown Info (5 cols) -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl tesla-shadow border border-slate-100 space-y-6">
-                    <h3 class="text-xl font-bold text-slate-900 pb-2 border-b">מרכיבי עלות הבעלות (TCO)</h3>
-
-                    <!-- Home Charging Cost Info -->
-                    <div class="space-y-2">
-                        <h4 class="font-bold text-slate-800">1. תשתית טעינה ביתית (חד-פעמי):</h4>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-50 p-3 rounded-lg border">
-                                <span class="text-xs text-slate-500 block">התקנה בסיסית</span>
-                                <span class="font-bold text-slate-900 text-sm">₪3,163</span>
+                
+                <!-- Left Control Box: Tool Selectors (5 cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    
+                    <!-- Tool 1: Deal Analyzer Trigger -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
+                        <div class="flex items-center space-x-reverse space-x-3 border-b border-slate-800 pb-3">
+                            <div class="bg-emerald-500/10 text-emerald-400 p-2.5 rounded-xl border border-emerald-500/20">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             </div>
-                            <div class="bg-slate-50 p-3 rounded-lg border">
-                                <span class="text-xs text-slate-500 block">התקנה מורכבת</span>
-                                <span class="font-bold text-slate-900 text-sm">₪9,640</span>
+                            <div>
+                                <h3 class="font-bold text-white text-base">מנתח עסקאות אוטומטי</h3>
+                                <p class="text-[11px] text-slate-400">בוחן את הנתונים הפעילים של המחשבונים באפליקציה</p>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-500 italic mt-1">* עלות טעינה מלאה בבית עומדת על כ-30 עד 60 ש"ח בלבד, בהשוואה לעד פי 2 בעמדות ציבוריות.</p>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            המערכת תאסוף אוטומטית את מחיר המחירון, הנסועה, הגיל, בריאות הסוללה ותחשב סיכונים והורדות מחיר להצגת דוח מוכן למשא ומתן.
+                        </p>
+                        <button onclick="analyzeActiveDeal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl transition text-sm flex items-center justify-center space-x-reverse space-x-1.5">
+                            <span>הרגע דוח שמאות AI לעסקה</span>
+                        </button>
                     </div>
 
-                    <!-- Insurance Cost Info -->
-                    <div class="space-y-2 border-t pt-4">
-                        <h4 class="font-bold text-slate-800">2. עלויות ביטוח שנתיות (ממוצע):</h4>
-                        <ul class="text-sm space-y-2 text-slate-600">
-                            <li class="flex justify-between"><span>ביטוח חובה:</span> <span class="font-bold text-slate-900">₪1,200 - ₪2,500</span></li>
-                            <li class="flex justify-between"><span>מקיף Model 3:</span> <span class="font-bold text-slate-900">₪5,500 - ₪7,000</span></li>
-                            <li class="flex justify-between"><span>מקיף Model Y:</span> <span class="font-bold text-slate-900">₪6,000 - ₪8,500</span></li>
-                        </ul>
+                    <!-- Tool 2: Visual Damage Inspector -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
+                        <div class="flex items-center space-x-reverse space-x-3 border-b border-slate-800 pb-3">
+                            <div class="bg-blue-500/10 text-blue-400 p-2.5 rounded-xl border border-blue-500/20">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-base">ניתוח נזקים ופגמי מרכב</h3>
+                                <p class="text-[11px] text-slate-400">העלה צילום של החלק הפגוע להערכת עלויות</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            מצאת שחיקת צמיג לא שווה? סדק בגג הזכוכית? שפשוף בגחון? העלה תמונה ממוקדת של המפגע וה-AI יבצע הערכת חומרה ומחיר לתיקון.
+                        </p>
+                        
+                        <div class="space-y-3">
+                            <!-- Hidden input -->
+                            <input type="file" id="damageImageInput" accept="image/*" class="hidden" onchange="handleDamageImageUpload(event)">
+                            <button onclick="document.getElementById('damageImageInput').click()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold py-2 px-4 rounded-xl transition text-sm flex items-center justify-center space-x-reverse space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                                <span id="uploadBtnText">העלה צילום נזק/בלאי</span>
+                            </button>
+                            <div id="imagePreviewContainer" class="hidden flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800">
+                                <div class="flex items-center space-x-reverse space-x-3">
+                                    <img id="imagePreview" src="" class="w-10 h-10 object-cover rounded-lg border border-slate-700">
+                                    <span class="text-xs text-slate-400 truncate max-w-[120px]" id="imageFileName">image.jpg</span>
+                                </div>
+                                <button onclick="clearUploadedImage()" class="text-xs text-red-400 hover:text-red-300 font-bold">הסר</button>
+                            </div>
+                            <button id="analyzeImageBtn" onclick="analyzeDamageImage()" disabled class="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-800 disabled:text-slate-600 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-xl transition text-sm flex items-center justify-center space-x-reverse space-x-1.5">
+                                <span>נתח את הצילום שהועלה</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tool 3: Chat Box Wrapper -->
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-3">
+                        <h4 class="text-sm font-bold text-slate-300">שיחה חופשית עם מומחה טסלה</h4>
+                        <div class="flex space-x-reverse space-x-2">
+                            <input type="text" id="chatInput" placeholder="שאל משהו... (למשל: מה עלות ביטוח ממוצעת?)" class="flex-1 bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-emerald-500" onkeypress="if(event.key === 'Enter') sendQuickChatMessage()">
+                            <button onclick="sendQuickChatMessage()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 rounded-xl text-xs transition">שלח</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Display Area: Output and Chat Console (7 cols) -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between space-y-6" style="min-height: 580px;">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-800">
+                        <div class="flex items-center space-x-reverse space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                            <h3 class="font-bold text-white text-base" id="panelTitle">מסך פלטי AI ואבחון</h3>
+                        </div>
+                        <button onclick="clearConsole()" class="text-xs text-slate-400 hover:text-white flex items-center space-x-reverse space-x-1">
+                            <span>נקה מסך</span>
+                        </button>
+                    </div>
+
+                    <!-- Output Console Body -->
+                    <div class="flex-1 overflow-y-auto bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-4 max-h-[460px] min-h-[380px]" id="aiOutputConsole">
+                        <!-- Initial Message -->
+                        <div class="text-slate-400 text-sm space-y-4 leading-relaxed" id="welcomeMessage">
+                            <p class="font-semibold text-emerald-400">שלום! אני Gemini, יועץ הרכב והשמאות האינטראקטיבי שלך.</p>
+                            <p>לחץ על **"נתח עסקה זו באמצעות AI יועץ"** או העלה צילום של נזק כלשהו כדי שנוכל להתחיל לעבוד. באפשרותך גם להקליד כל שאלה בתיבת השיחה למטה.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <div onclick="setQuickQuestion('האם מומלץ לקנות טסלה מודל 3 שנת 2021 שיוצרה בארה״ב?')" class="bg-slate-900 border border-slate-800/60 p-2.5 rounded-lg text-xs cursor-pointer hover:border-emerald-500/30 text-slate-300">
+                                    "האם מומלץ לקנות טסלה מודל 3 שנת 2021 שיוצרה בארה״ב?"
+                                </div>
+                                <div onclick="setQuickQuestion('כמה עולה להחליף סוללה בטסלה מחוץ לאחריות בישראל?')" class="bg-slate-900 border border-slate-800/60 p-2.5 rounded-lg text-xs cursor-pointer hover:border-emerald-500/30 text-slate-300">
+                                    "כמה עולה להחליף סוללה בטסלה מחוץ לאחריות בישראל?"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Loader (Hidden by default) -->
+                    <div id="aiLoader" class="hidden flex items-center justify-center space-x-reverse space-x-3 py-4 bg-slate-950 rounded-xl border border-slate-800/60">
+                        <div class="w-5 h-5 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></div>
+                        <span class="text-xs text-emerald-400 font-semibold" id="loaderText">מחבר לענן בינה מלאכותית של Gemini...</span>
+                    </div>
+
+                    <!-- Clipboard helper -->
+                    <div class="flex justify-between items-center text-xs text-slate-500">
+                        <span>סך הכל נותחו עסקאות: <span id="dealCount">0</span></span>
+                        <button onclick="copyConsoleOutput()" class="text-slate-400 hover:text-white flex items-center space-x-reverse space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+                            <span>העתק פלט ללוח הגזירים</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Savings Simulator (7 cols) -->
-                <div class="lg:col-span-7 bg-slate-900 text-white p-6 rounded-2xl tesla-shadow flex flex-col justify-between space-y-6">
-                    <div>
-                        <h3 class="text-xl font-bold border-b border-slate-700 pb-3">מחשבון חיסכון שנתי: בנזין מול טסלה</h3>
-                        <p class="text-xs text-slate-400 mt-2">הזן את הנסועה השנתית ומחיר הדלק כדי לראות את כדאיות הרכישה:</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Inputs -->
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-xs text-slate-400 block mb-1">קילומטראז' שנתי משוער:</label>
-                                <div class="flex justify-between text-xs text-slate-400">
-                                    <span id="kmSavingsLabel" class="text-blue-400 font-bold">20,000 ק"מ בשנה</span>
-                                </div>
-                                <input type="range" id="annualKm" min="5000" max="40000" step="2500" value="20000" class="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                            </div>
-
-                            <div>
-                                <label class="text-xs text-slate-400 block mb-1">מחיר ליטר דלק (ש"ח):</label>
-                                <div class="flex justify-between text-xs text-slate-400">
-                                    <span id="fuelPriceLabel" class="text-blue-400 font-bold">₪7.50 לליטר</span>
-                                </div>
-                                <input type="range" id="fuelPrice" min="6.5" max="9.0" step="0.10" value="7.50" class="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                            </div>
-                        </div>
-
-                        <!-- Results display -->
-                        <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 flex flex-col justify-center text-center">
-                            <span class="text-xs text-slate-400 block mb-1">החיסכון השנתי הממוצע שלך בדלק</span>
-                            <div id="annualSavings" class="text-3xl font-black text-green-400">₪11,400</div>
-                            <span class="text-xs text-slate-500 mt-2">* משקלל עלות טעינה ביתית ממוצעת מול צריכת דלק של 1:12 ברכב בנזין.</span>
-                        </div>
-                    </div>
-
-                    <!-- Doughnut Chart for Annual TCO -->
-                    <div class="bg-slate-800 p-4 rounded-xl">
-                        <h4 class="text-xs font-bold text-slate-400 mb-2">חלוקת עלות אחזקה שנתית טיפוסית בטסלה (ש"ח)</h4>
-                        <div class="chart-container" style="height: 150px;">
-                            <canvas id="tcoPieChart"></canvas>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
     </main>
 
     <!-- Global Footer -->
-    <footer class="bg-slate-900 text-white py-12 mt-12 border-t border-slate-800">
+    <footer class="bg-slate-950 text-slate-400 py-12 mt-12 border-t border-slate-900">
         <div class="max-w-6xl mx-auto px-4 text-center space-y-4">
-            <p class="text-lg font-bold">מוכן להתקדם בצורה חכמה לטסלה?</p>
-            <p class="text-xs text-slate-400 max-w-2xl mx-auto">
-                המידע מבוסס על נתוני השוק, מחירי מחירון, והנחיות מיסוי ואינפלציה מעודכנים לשנת 2026 בישראל. אין לראות במחשבונים המופיעים באתר כהמלצה פיננסית בלעדית, אלא ככלי תומך החלטה המבוסס על מודלים מתמטיים.
+            <p class="text-lg font-bold text-slate-200">לקנות טסלה משומשת בראש שקט</p>
+            <p class="text-xs max-w-2xl mx-auto">
+                המידע והנתונים במחשבונים ובמדריכים מבוססים על ניתוח עסקאות בפועל בשוק הישראלי, עקרונות השמאות של לוי יצחק, והגדרות האחריות הרשמיות של Tesla. אין לראות בנתונים אלו המלצה שמאית או ייעוץ משפטי בלעדי.
             </p>
-            <div class="text-xs text-slate-600 border-t border-slate-800 pt-6">
-                © 2026 Tesla Buying Guide Israel. כל הזכויות שמורות.
+            <div class="text-xs text-slate-600 border-t border-slate-900 pt-6">
+                © 2026 מנוע שמאות והשוואת טסלה משומשת. כל הזכויות שמורות.
             </div>
         </div>
     </footer>
 
     <!-- Main Logic and App Execution -->
     <script>
-        // Global variables to track state
-        let isBalloonLoan = true; // Default to balloon based on user input
+        // Global variables for Hand state
+        let currentHand = 1;
+        let warrantyChart;
+        let uploadedImageBase64 = null;
+        let uploadedImageMime = null;
+        let dealAnalysisCount = 0;
 
         // --- Tab Navigation ---
         function showTab(tabId) {
@@ -656,466 +653,645 @@
             
             // Handle active state on Desktop Navbar
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-blue-600', 'bg-blue-50', 'font-bold');
-                btn.classList.add('text-slate-600', 'font-semibold');
+                btn.className = "nav-btn px-4 py-2 rounded-lg font-semibold text-slate-400 hover:text-blue-400 hover:bg-slate-800 transition";
             });
             // Match the button
             const activeDesktopBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
             if (activeDesktopBtn) {
-                activeDesktopBtn.classList.add('text-blue-600', 'bg-blue-50', 'font-bold');
-                activeDesktopBtn.classList.remove('text-slate-600', 'font-semibold');
+                if(tabId === 'ai-advisor') {
+                    activeDesktopBtn.className = "nav-btn px-4 py-2 rounded-lg font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 transition flex items-center space-x-reverse space-x-1.5";
+                } else {
+                    activeDesktopBtn.className = "nav-btn px-4 py-2 rounded-lg font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 transition";
+                }
             }
 
             // Handle active state on Mobile Bottom Bar
             document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-                btn.classList.remove('text-blue-600', 'font-bold');
-                btn.classList.add('text-slate-500', 'font-semibold');
+                btn.className = "mobile-nav-btn flex flex-col items-center text-slate-400 font-semibold";
             });
             const activeMobileBtn = Array.from(document.querySelectorAll('.mobile-nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
             if (activeMobileBtn) {
-                activeMobileBtn.classList.add('text-blue-600', 'font-bold');
-                activeMobileBtn.classList.remove('text-slate-500', 'font-semibold');
+                if(tabId === 'ai-advisor') {
+                    activeMobileBtn.className = "mobile-nav-btn flex flex-col items-center text-emerald-400 font-bold";
+                } else {
+                    activeMobileBtn.className = "mobile-nav-btn flex flex-col items-center text-blue-400 font-bold";
+                }
             }
         }
 
-        // --- Used Car Inspection Sub-Tabs ---
-        function selectUsedTab(tabId) {
-            document.querySelectorAll('.used-tab-content').forEach(content => content.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
+        // --- Toast Notifications Helper ---
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl shadow-lg border text-xs font-bold transition duration-300 transform translate-x-4 opacity-0 flex items-center space-x-reverse space-x-2 ${
+                type === 'success' ? 'bg-emerald-950 border-emerald-500 text-emerald-400' :
+                type === 'error' ? 'bg-red-950 border-red-500 text-red-400' :
+                'bg-slate-900 border-slate-700 text-slate-200'
+            }`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            
+            // Animation in
+            setTimeout(() => {
+                toast.classList.remove('translate-x-4', 'opacity-0');
+            }, 50);
 
-            document.querySelectorAll('.used-tab-btn').forEach(btn => {
-                btn.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
-                btn.classList.add('text-slate-500', 'font-semibold');
+            // Out and destroy
+            setTimeout(() => {
+                toast.classList.add('translate-x-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // --- Helper: Toggle Checkbox ---
+        function toggleCheck(id) {
+            const chk = document.getElementById(id);
+            if (chk) {
+                chk.checked = !chk.checked;
+            }
+        }
+
+        // --- Helper: Load Model to Pricing Calculator ---
+        function loadModelToPricing(price, warrantyLimit) {
+            document.getElementById('basePriceInput').value = price;
+            document.getElementById('warrantyModelSelect').value = warrantyLimit;
+            
+            // Switch tabs
+            showTab('pricing');
+            updatePricingCalculator();
+            updateWarrantyTracker();
+        }
+
+        // --- Set Hand ---
+        function setHand(handNum) {
+            currentHand = handNum;
+            document.querySelectorAll('.hand-btn').forEach(btn => {
+                btn.className = "hand-btn py-2 text-xs font-bold rounded-lg transition text-slate-400 hover:text-white";
+            });
+            document.getElementById('btnHand' + handNum).className = "hand-btn py-2 text-xs font-bold rounded-lg transition bg-blue-600 text-white";
+            updatePricingCalculator();
+        }
+
+        // --- STREAMING_CHUNK: Writing Levi Itzhak Math Engine... ---
+        function updatePricingCalculator() {
+            const basePrice = parseFloat(document.getElementById('basePriceInput').value);
+            const km = parseFloat(document.getElementById('kmInput').value);
+            const ageMonths = parseFloat(document.getElementById('ageInput').value);
+            const ownership = document.getElementById('ownershipInput').value;
+
+            // Update Labels
+            document.getElementById('basePriceVal').innerText = `₪${basePrice.toLocaleString()}`;
+            document.getElementById('kmVal').innerText = `${km.toLocaleString()} ק"מ`;
+            document.getElementById('ageVal').innerText = `${ageMonths} חודשים (${(ageMonths/12).toFixed(1)} שנים)`;
+
+            // Deductions / Additions Percentage
+            let penaltyPercent = 0;
+
+            // 1. Ownership deduction
+            let ownershipPenaltyVal = 0;
+            if (ownership === 'single_lease') {
+                penaltyPercent += 14;
+                ownershipPenaltyVal = basePrice * 0.14;
+            } else if (ownership === 'company_lease') {
+                penaltyPercent += 22;
+                ownershipPenaltyVal = basePrice * 0.22;
+            } else if (ownership === 'company') {
+                penaltyPercent += 18;
+                ownershipPenaltyVal = basePrice * 0.18;
+            }
+            document.getElementById('ownershipPenaltyDisplay').innerText = `₪${Math.round(ownershipPenaltyVal).toLocaleString()} (${penaltyPercent > 0 ? '-' + penaltyPercent + '%' : '0%'})`;
+
+            // 2. Hand deduction
+            let handPenaltyVal = 0;
+            let handDeductionPercent = 0;
+            if (currentHand === 2) {
+                handDeductionPercent = 3;
+            } else if (currentHand === 3) {
+                handDeductionPercent = 7;
+            } else if (currentHand >= 4) {
+                handDeductionPercent = 11;
+            }
+            handPenaltyVal = basePrice * (handDeductionPercent / 100);
+            document.getElementById('handPenaltyDisplay').innerText = `₪${Math.round(handPenaltyVal).toLocaleString()} (${handDeductionPercent > 0 ? '-' + handDeductionPercent + '%' : '0%'})`;
+
+            // 3. Mileage (KM) vs standard. Standard is 20,000 KM per year.
+            const standardKmForAge = (ageMonths / 12) * 20000;
+            let kmPenaltyPercent = 0;
+            let kmPenaltyVal = 0;
+
+            if (km > standardKmForAge) {
+                // Excess mileage penalty: 1.5% deduction for every 10,000 km exceeding the average.
+                const excessKm = km - standardKmForAge;
+                kmPenaltyPercent = (excessKm / 10000) * 1.5;
+                // Cap penalty at 15%
+                kmPenaltyPercent = Math.min(15, kmPenaltyPercent);
+                kmPenaltyVal = basePrice * (kmPenaltyPercent / 100);
+                document.getElementById('kmPenaltyDisplay').innerText = `₪${Math.round(kmPenaltyVal).toLocaleString()} (-${kmPenaltyPercent.toFixed(1)}%)`;
+                document.getElementById('kmPenaltyDisplay').className = "font-bold text-red-400";
+            } else {
+                // Below average: slight value addition (capped at +5%)
+                const lowKmDifference = standardKmForAge - km;
+                const kmAdditionPercent = Math.min(5, (lowKmDifference / 10000) * 0.8);
+                kmPenaltyVal = -basePrice * (kmAdditionPercent / 100); // negative is addition
+                document.getElementById('kmPenaltyDisplay').innerText = `₪${Math.round(Math.abs(kmPenaltyVal)).toLocaleString()} (+${kmAdditionPercent.toFixed(1)}%)`;
+                document.getElementById('kmPenaltyDisplay').className = "font-bold text-green-400";
+            }
+
+            // Calculate final value
+            const totalDeductions = ownershipPenaltyVal + handPenaltyVal + kmPenaltyVal;
+            const finalPrice = Math.max(25000, basePrice - totalDeductions);
+            const totalDiffPercent = ((basePrice - finalPrice) / basePrice) * 100;
+
+            document.getElementById('finalPriceDisplay').innerText = `₪${Math.round(finalPrice).toLocaleString()}`;
+            
+            const diffEl = document.getElementById('priceDiffPercent');
+            if (totalDiffPercent > 0) {
+                diffEl.innerText = `הפחתה כוללת של -${totalDiffPercent.toFixed(2)}% מהמחירון הבסיסי`;
+                diffEl.className = "text-xs font-semibold text-red-400 block";
+            } else if (totalDiffPercent < 0) {
+                diffEl.innerText = `תוספת כוללת של +${Math.abs(totalDiffPercent).toFixed(2)}% מהמחירון הבסיסי`;
+                diffEl.className = "text-xs font-semibold text-green-400 block";
+            } else {
+                diffEl.innerText = `זהה למחירון הבסיסי ללא שינוי`;
+                diffEl.className = "text-xs font-semibold text-slate-400 block";
+            }
+        }
+
+        // --- STREAMING_CHUNK: Writing Warranty & Battery State of Health Tracker Logic... ---
+        function updateWarrantyTracker() {
+            const limitKm = parseFloat(document.getElementById('warrantyModelSelect').value);
+            const currentKm = parseFloat(document.getElementById('warrantyKmInput').value);
+            const regYear = parseInt(document.getElementById('warrantyYearInput').value);
+
+            // Update Label
+            document.getElementById('warrantyKmVal').innerText = `${currentKm.toLocaleString()} ק"מ`;
+
+            // Calculate Remaining Warranty
+            const currentYear = 2026;
+            const ageYears = currentYear - regYear;
+            const remainingMonths = Math.max(0, (8 * 12) - (ageYears * 12));
+            const remainingKm = Math.max(0, limitKm - currentKm);
+
+            document.getElementById('warrantyMonthsLeft').innerText = `${remainingMonths} חודשים נותרים`;
+            document.getElementById('warrantyKmLeft').innerText = `או ${remainingKm.toLocaleString()} ק"מ נותרים`;
+
+            if (remainingMonths === 0 || remainingKm === 0) {
+                document.getElementById('warrantyMonthsLeft').className = "text-2xl font-black text-red-500";
+            } else {
+                document.getElementById('warrantyMonthsLeft').className = "text-2xl font-black text-blue-400";
+            }
+
+            // Estimate State of Health (SoH)
+            let soh = 100;
+            soh -= (currentKm / 18000);
+            soh -= (ageYears * 0.8);
+            soh = Math.max(70, soh);
+
+            const sohDisplay = document.getElementById('sohDisplay');
+            sohDisplay.innerText = `~${soh.toFixed(1)}%`;
+
+            const sohDesc = document.getElementById('sohDesc');
+            if (soh >= 88) {
+                sohDisplay.className = "text-2xl font-black text-emerald-400";
+                sohDesc.innerText = "מצב סוללה בריא מאוד ומצוין";
+            } else if (soh >= 80) {
+                sohDisplay.className = "text-2xl font-black text-amber-400";
+                sohDesc.innerText = "שחיקה נורמטיבית ומתונה";
+            } else {
+                sohDisplay.className = "text-2xl font-black text-red-500";
+                sohDesc.innerText = "שחיקה מוגברת. מומלץ לבצע בדיקת מעבדה!";
+            }
+
+            // Update Warranty Chart
+            const usedPercentage = Math.min(100, (currentKm / limitKm) * 100);
+            const remainingPercentage = 100 - usedPercentage;
+
+            if (warrantyChart) {
+                warrantyChart.data.datasets[0].data = [usedPercentage, remainingPercentage];
+                warrantyChart.update();
+            }
+        }
+
+        // --- STREAMING_CHUNK: Setting up Exponential Backoff for API calls... ---
+        async function fetchWithRetry(url, options, retries = 3, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) return response;
+                    if (response.status === 429) {
+                        console.warn(`Rate limit reached (429). Retrying in ${delay}ms...`);
+                        await new Promise(res => setTimeout(res, delay));
+                        delay *= 2.5; // Exponential backoff with jitter-like behavior
+                        continue;
+                    }
+                    throw new Error(`HTTP Error: ${response.status}`);
+                } catch (e) {
+                    if (i === retries - 1) throw e;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // --- STREAMING_CHUNK: Integrating Gemini API Call Engine... ---
+        async function callGeminiAPI(promptText, imageData = null, imageMime = null) {
+            const apiKey = ""; // Left empty so runtime automatically supplies it
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            // Build payload parts
+            const parts = [{ text: promptText }];
+            if (imageData && imageMime) {
+                parts.push({
+                    inlineData: {
+                        mimeType: imageMime,
+                        data: imageData
+                    }
+                });
+            }
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: parts
+                }],
+                systemInstruction: {
+                    parts: [{ text: "אתה 'Gemini נטפרי', יועץ רכב מומחה, שמאי רכב מקצועי ומאבחן תקלות מוסמך המתמחה ברכבי טסלה (Tesla) בשוק הישראלי. עליך לענות בעברית רהוטה ומדויקת, בצורה מסודרת, אמינה ומקצועית מאוד. אל תתייחס לענייני דת, אמונה, הלכה או מנהגים דתיים בשום אופן. עליך להתמקד רק בהיבטים הפיננסיים והטכנולוגיים של העסקאות והבדיקות." }]
+                }
+            };
+
+            const response = await fetchWithRetry(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
             });
 
-            document.getElementById('btn-' + tabId).classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
-            document.getElementById('btn-' + tabId).classList.remove('text-slate-500', 'font-semibold');
-        }
-
-        // --- Presets Helper ---
-        function setFinancePreset(price, equity, period, bankInterest, inflation, isBalloon, balloonAmount) {
-            document.getElementById('priceInput').value = price;
-            document.getElementById('equityInput').value = equity;
-            document.getElementById('periodInput').value = period;
-            document.getElementById('bankInterestInput').value = bankInterest;
-            document.getElementById('inflationInput').value = inflation;
-            
-            if (isBalloon) {
-                document.getElementById('balloonInput').value = balloonAmount;
+            const result = await response.json();
+            const textResponse = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (!textResponse) {
+                throw new Error("קבלת תשובה ריקה מהבינה המלאכותית");
             }
-            
-            setLoanType(isBalloon);
+            return textResponse;
         }
 
-        // Toggle Loan Mode (Spitzer vs Balloon)
-        function setLoanType(balloonSelected) {
-            isBalloonLoan = balloonSelected;
-            
-            const btnSpitzer = document.getElementById('toggleSpitzer');
-            const btnBalloon = document.getElementById('toggleBalloon');
-            const secBalloon = document.getElementById('balloonSection');
-            const dispBalloon = document.getElementById('balloonFinalDisplay');
-
-            if (isBalloonLoan) {
-                btnBalloon.className = "py-2 text-xs font-bold rounded-lg transition bg-white text-slate-800 shadow-sm";
-                btnSpitzer.className = "py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900";
-                secBalloon.classList.remove('hidden');
-                dispBalloon.classList.remove('hidden');
-                document.getElementById('promoLabelSub').innerText = "מסלול בלון קבוע, לא צמוד (מימון ישיר)";
-            } else {
-                btnSpitzer.className = "py-2 text-xs font-bold rounded-lg transition bg-white text-slate-800 shadow-sm";
-                btnBalloon.className = "py-2 text-xs font-bold rounded-lg transition text-slate-600 hover:text-slate-900";
-                secBalloon.classList.add('hidden');
-                dispBalloon.classList.add('hidden');
-                document.getElementById('promoLabelSub').innerText = "קבוע, לא צמוד (מימון ישיר)";
-            }
-
-            updateFinanceCalculator();
+        // --- Helper: Format raw text or basic markdown back to clean HTML ---
+        function formatMarkdown(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-emerald-400">$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em class="text-slate-300">$1</em>')
+                .replace(/### (.*?)\n/g, '<h4 class="text-base font-bold text-blue-400 mt-4 mb-2">$1</h4>')
+                .replace(/## (.*?)\n/g, '<h3 class="text-lg font-bold text-white mt-5 mb-3 border-b border-slate-800 pb-1">$1</h3>')
+                .replace(/- (.*?)\n/g, '<li class="text-xs text-slate-300 mr-4 list-disc">$1</li>')
+                .replace(/\n/g, '<br>');
         }
 
-        // --- Checklist Populate & Memory ---
-        const checklistItems = [
-            { category: "מרכב וחיצוני", text: "בדיקת מרווחי פאנלים (Panel Gaps) לאורך כל המרכב" },
-            { category: "מרכב וחיצוני", text: "סריקה יסודית של צבע הרכב תחת אור חזק לשריטות או תיקונים מקומיים" },
-            { category: "אביזרים וערכה", text: "וידוא קבלת 2 כרטיסי מפתח (NFC) מקוריים ותקינותם" },
-            { category: "אביזרים וערכה", text: "בדיקת המצאות כבל טעינה ביתי מקורי ומתאם מתאים בתא המטען התחתון" },
-            { category: "מערכות דיגיטליות", text: "הפעלת מערכת הניווט ווידוא חיבור והתחלת כיול מצלמות האוטופיילוט" },
-            { category: "בדיקה דינמית", text: "נסיעת מבחן קצרה לוודא שאין רעידות חריגות בהגה או רעשי מתלים חזקים" },
-            { category: "בדיקת טעינה", text: "הגעה לעמדת סופרצ'ארג'ר לטעינה קצרה לוודא תקינות המגעים ושבב הטעינה המהירה" }
-        ];
+        // --- STREAMING_CHUNK: Implementing Deal Analyzer logic via API... ---
+        async function analyzeActiveDeal() {
+            showTab('ai-advisor');
+            
+            // Collect live application data
+            const basePrice = document.getElementById('basePriceInput').value;
+            const km = document.getElementById('kmInput').value;
+            const ageMonths = document.getElementById('ageInput').value;
+            const ownership = document.getElementById('ownershipInput').value;
+            const calculatedPrice = document.getElementById('finalPriceDisplay').innerText;
+            const modelText = document.getElementById('warrantyModelSelect').options[document.getElementById('warrantyModelSelect').selectedIndex].text;
+            const batterySoh = document.getElementById('sohDisplay').innerText;
+            const warrantyLeft = document.getElementById('warrantyMonthsLeft').innerText + " (" + document.getElementById('warrantyKmLeft').innerText + ")";
 
-        function initChecklist() {
-            const container = document.getElementById('interactiveChecklist');
-            container.innerHTML = "";
-            checklistItems.forEach((item, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "flex items-start space-x-reverse space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50/50 transition cursor-pointer";
-                itemDiv.innerHTML = `
-                    <input type="checkbox" id="chk-${index}" class="mt-1 w-5 h-5 text-blue-600 border-slate-300 rounded focus:ring-blue-500 cursor-pointer">
-                    <div class="flex-1">
-                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-0.5">${item.category}</span>
-                        <label for="chk-${index}" class="text-sm md:text-base text-slate-800 font-medium select-none cursor-pointer">${item.text}</label>
+            // Render Loader UI
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            const consoleEl = document.getElementById('aiOutputConsole');
+            const loader = document.getElementById('aiLoader');
+            document.getElementById('panelTitle').innerText = "אבחון וניתוח עסקה פעילה";
+            document.getElementById('loaderText').innerText = "מנתח נתוני שמאות, בלאי סוללה ומתווה ירידת ערך בשוק הישראלי...";
+            loader.classList.remove('hidden');
+
+            const prompt = `
+            אנא נתח את העסקה הבאה של טסלה משומשת בישראל וספק דוח שמאות הנדסי מקצועי, הערכת כדאיות וטיפים לניהול משא ומתן מול המוכר:
+            - דגם מבוקש: ${modelText}
+            - מחיר מחירון בסיסי מבוקש: ₪${parseFloat(basePrice).toLocaleString()}
+            - גיל הרכב על הכביש: ${ageMonths} חודשים
+            - קילומטראז' נוכחי: ${parseFloat(km).toLocaleString()} ק"מ
+            - סוג בעלות מקורית: ${ownership}
+            - מחיר שוק משוקלל משוער (לפי לוי יצחק מותאם): ${calculatedPrice}
+            - בריאות סוללה משוערת (SoH): ${batterySoh}
+            - יתרת אחריות יצרן על סוללה ומנוע: ${warrantyLeft}
+
+            בצע את הדברים הבאים:
+            1. הערך את רמת הסיכון של העסקה (נמוך / בינוני / גבוה) והסבר מדוע על בסיס קצב הנסועה השנתי.
+            2. הסבר כיצד בריאות הסוללה (${batterySoh}) משפיעה על הטווח הריאלי שלו.
+            3. ספק 3-4 נקודות מיקוח ספציפיות המבוססות על הנתונים הללו (למשל הפחתה בגין קילומטראז' חריג או סוג הבעלות), אילו רכיבים מכניים נוספים כדאי לבדוק ברכב הספציפי הזה לפני הרכישה.
+            `;
+
+            try {
+                const responseText = await callGeminiAPI(prompt);
+                
+                // Update Console
+                const date = new Date().toLocaleTimeString('he-IL');
+                consoleEl.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <span class="text-xs text-emerald-400 font-bold flex items-center space-x-reverse space-x-1.5">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                                <span>הופק דוח שמאות AI מושלם</span>
+                            </span>
+                            <span class="text-[10px] text-slate-500">${date}</span>
+                        </div>
+                        <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                            ${formatMarkdown(responseText)}
+                        </div>
                     </div>
                 `;
-                container.appendChild(itemDiv);
-            });
+                dealAnalysisCount++;
+                document.getElementById('dealCount').innerText = dealAnalysisCount;
+                showToast("דוח העסקה הופק בהצלחה על ידי ה-AI!", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("שגיאה בחיבור לשרתי Gemini. נסה שנית.", "error");
+                consoleEl.innerHTML = `<p class="text-red-400 text-xs font-bold">מצטערים, חלה שגיאה בעיבוד הנתונים: ${e.message}</p>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
         }
 
-        // --- STREAMING_CHUNK: Initializing Financial Charts and Data Sets... ---
-        let financeChart;
-        function initFinanceChart() {
-            const ctx = document.getElementById('amortizationChart').getContext('2d');
-            financeChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: 'מבצע טסלה 1.25% (לא צמוד)',
-                            data: [],
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.1
-                        },
-                        {
-                            label: 'מבצע טסלה 0% (צמוד מדד)',
-                            data: [],
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.05)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.1
-                        },
-                        {
-                            label: 'הלוואה בנקאית קבועה',
-                            data: [],
-                            borderColor: '#94a3b8',
-                            borderWidth: 2,
-                            borderDash: [5, 5],
-                            fill: false,
-                            tension: 0.1
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#94a3b8', font: { family: 'Assistant', size: 10 } } }
-                    },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { family: 'Assistant', size: 9 } } },
-                        y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { family: 'Assistant', size: 9 } } }
-                    }
-                }
-            });
+        // --- STREAMING_CHUNK: Handling Image Upload Convertion to Base64... ---
+        function handleDamageImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            document.getElementById('uploadBtnText').innerText = "משנה קובץ...";
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fullBase64 = e.target.result;
+                const parts = fullBase64.split(',');
+                uploadedImageMime = parts[0].match(/:(.*?);/)[1];
+                uploadedImageBase64 = parts[1];
+
+                // Show preview UI
+                document.getElementById('imagePreview').src = fullBase64;
+                document.getElementById('imageFileName').innerText = file.name;
+                document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                document.getElementById('analyzeImageBtn').removeAttribute('disabled');
+                document.getElementById('uploadBtnText').innerText = "החלף צילום נזק";
+                showToast("הצילום נטען בהצלחה ומקודד ל-AI!", "success");
+            };
+            reader.readAsDataURL(file);
         }
 
-        // --- STREAMING_CHUNK: Writing Advanced Balloon and Spitzer Loan Math including Down Payments... ---
-        function updateFinanceCalculator() {
-            const price = parseFloat(document.getElementById('priceInput').value);
-            const equity = parseFloat(document.getElementById('equityInput').value);
-            const period = parseInt(document.getElementById('periodInput').value);
-            const inflation = parseFloat(document.getElementById('inflationInput').value) / 100;
-            const bankRate = parseFloat(document.getElementById('bankInterestInput').value) / 100;
-            const balloonAmount = parseFloat(document.getElementById('balloonInput').value);
+        function clearUploadedImage() {
+            uploadedImageBase64 = null;
+            uploadedImageMime = null;
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('analyzeImageBtn').setAttribute('disabled', 'true');
+            document.getElementById('damageImageInput').value = "";
+            document.getElementById('uploadBtnText').innerText = "העלה צילום נזק/בלאי";
+            showToast("הצילום הוסר מהמערכת.");
+        }
 
-            const loanAmount = Math.max(0, price - equity);
-
-            // Update UI Labels
-            document.getElementById('priceVal').innerText = `₪${price.toLocaleString()}`;
-            document.getElementById('equityVal').innerText = `₪${equity.toLocaleString()}`;
-            document.getElementById('outlayEquityLabel').innerText = `₪${equity.toLocaleString()}`;
-            document.getElementById('periodVal').innerText = `${period} חודשים (${(period/12).toFixed(1)} שנים)`;
-            document.getElementById('inflationVal').innerText = `${(inflation * 100).toFixed(1)}% לשנה`;
-            document.getElementById('bankInterestVal').innerText = `${(bankRate * 100).toFixed(2)}% לשנה`;
-            document.getElementById('balloonVal').innerText = `₪${balloonAmount.toLocaleString()}`;
-            document.getElementById('calcLoanSum').innerText = `₪${loanAmount.toLocaleString()}`;
-
-            const labels = [];
-            const promoCumulativePayments = [];
-            const teslaPayments = [];
-            const bankCumulativePayments = [];
-            
-            const monthlyPromoRate = 0.0125 / 12;
-            const monthlyInflation = Math.pow(1 + inflation, 1/12);
-
-            let teslaPromoMonthlyPay = 0;
-            let totalPromoPaid = 0;
-
-            if (isBalloonLoan) {
-                // Balloon Loan Math
-                const comp = Math.pow(1 + monthlyPromoRate, period);
-                const geomSum = (comp - 1) / monthlyPromoRate;
-                teslaPromoMonthlyPay = (loanAmount * comp - balloonAmount) / geomSum;
-                totalPromoPaid = (teslaPromoMonthlyPay * period) + balloonAmount;
-
-                document.getElementById('teslaPromoBalloon').innerText = `₪${balloonAmount.toLocaleString()}`;
-            } else {
-                // Spitzer Regular Loan
-                teslaPromoMonthlyPay = loanAmount * (monthlyPromoRate * Math.pow(1 + monthlyPromoRate, period)) / (Math.pow(1 + monthlyPromoRate, period) - 1);
-                totalPromoPaid = teslaPromoMonthlyPay * period;
+        // --- STREAMING_CHUNK: Analyzing Damage Photo via API... ---
+        async function analyzeDamageImage() {
+            if (!uploadedImageBase64 || !uploadedImageMime) {
+                showToast("אנא העלה צילום תחילה", "error");
+                return;
             }
 
-            document.getElementById('teslaPromoPay').innerText = `₪${Math.round(teslaPromoMonthlyPay).toLocaleString()}`;
-            document.getElementById('teslaPromoTotalPaid').innerText = `₪${Math.round(totalPromoPaid).toLocaleString()}`;
-            
-            // Calculate Total Outlay (Including Down Payment)
-            const teslaPromoTotalOutlay = totalPromoPaid + equity;
-            document.getElementById('teslaPromoTotalOutlay').innerText = `₪${Math.round(teslaPromoTotalOutlay).toLocaleString()}`;
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            const consoleEl = document.getElementById('aiOutputConsole');
+            const loader = document.getElementById('aiLoader');
+            document.getElementById('panelTitle').innerText = "ניתוח חזותי של ליקוי/נזק מרכב";
+            document.getElementById('loaderText').innerText = "מפענח את התמונה ומנתח אנומליות הנדסיות במכלולי טסלה...";
+            loader.classList.remove('hidden');
 
-            // 2. Tesla 0% Linked Math (Historic/Alternative)
-            const baseMonthly = loanAmount / period;
-            let totalTeslaPaid = 0;
-            let currentIndexFactor = 1;
+            const prompt = `
+            נתח את התמונה המצורפת של רכב הטסלה המשומש המוצע למכירה.
+            זהה מהו הליקוי המוצג בתמונה (למשל: סדק בגג זכוכית, שפשוף/מכה בגחון, שחיקה פגומה של צמיג, סדק בפנס, או פגם פנימי).
+            ספק את הנתונים הבאים בעברית מקצועית ומסודרת:
+            1. מהו הליקוי שזיהית וחומרתו המשוערת (קל / בינוני / חמור שדורש החלפה דחופה).
+            2. האם הליקוי הספציפי הזה משפיע על בטיחות הנסיעה או על יתרת אחריות היצרן של טסלה (במיוחד אם מדובר במארז הסוללה או במערכת המצלמות).
+            3. מהי הערכת עלויות התיקון הריאלית בישראל (במוסך הסדר או מוסך מורשה טסלה כגון פתח תקווה או ראשון לציון) בשנת 2026.
+            4. בכמה מומלץ לדרוש מהמוכר להפחית את מחיר הרכב בעקבות גילוי זה.
+            `;
 
-            // 3. Fixed Bank Loan Math
-            const monthlyBankRate = bankRate / 12;
-            const bankMonthlyPay = loanAmount * (monthlyBankRate * Math.pow(1 + monthlyBankRate, period)) / (Math.pow(1 + monthlyBankRate, period) - 1);
-            const totalBankPaid = bankMonthlyPay * period;
-
-            document.getElementById('bankPay').innerText = `₪${Math.round(bankMonthlyPay).toLocaleString()}`;
-            document.getElementById('bankTotalPaid').innerText = `₪${Math.round(totalBankPaid).toLocaleString()}`;
-            
-            const bankTotalOutlay = totalBankPaid + equity;
-            document.getElementById('bankTotalOutlay').innerText = `₪${Math.round(bankTotalOutlay).toLocaleString()}`;
-
-            // Set up chart starting point (Month 0 = Only Down Payment Cash Outlay)
-            labels.push("מקדמה (חודש 0)");
-            promoCumulativePayments.push(Math.round(equity));
-            teslaPayments.push(Math.round(equity));
-            bankCumulativePayments.push(Math.round(equity));
-
-            let currentTeslaPaidWithEquity = equity;
-
-            // Build chart arrays
-            for (let m = 1; m <= period; m++) {
-                currentIndexFactor *= monthlyInflation;
-                const monthlyPaid = baseMonthly * currentIndexFactor;
-                totalTeslaPaid += monthlyPaid;
-                currentTeslaPaidWithEquity += monthlyPaid;
+            try {
+                const responseText = await callGeminiAPI(prompt, uploadedImageBase64, uploadedImageMime);
                 
-                if (m === 1) {
-                    document.getElementById('teslaStartPay').innerText = `₪${Math.round(monthlyPaid).toLocaleString()}`;
-                }
-                if (m === period) {
-                    document.getElementById('teslaEndPay').innerText = `₪${Math.round(monthlyPaid).toLocaleString()}`;
-                }
-
-                if (m % 6 === 0 || m === 1 || m === period) {
-                    labels.push(`חודש ${m}`);
-                    
-                    // Path A (Tesla 1.25% - could be balloon or standard)
-                    let cumPromo = teslaPromoMonthlyPay * m;
-                    if (isBalloonLoan && m === period) {
-                        cumPromo += balloonAmount; // Add balloon at the very end
-                    }
-                    promoCumulativePayments.push(Math.round(equity + cumPromo));
-
-                    // Path B (Historic 0% Linked)
-                    teslaPayments.push(Math.round(currentTeslaPaidWithEquity));
-
-                    // Path C (Standard Bank)
-                    bankCumulativePayments.push(Math.round(equity + (bankMonthlyPay * m)));
-                }
+                const date = new Date().toLocaleTimeString('he-IL');
+                consoleEl.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <span class="text-xs text-blue-400 font-bold flex items-center space-x-reverse space-x-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <span>הושלם ניתוח הראייה הממוחשבת של הנזק</span>
+                            </span>
+                            <span class="text-[10px] text-slate-500">${date}</span>
+                        </div>
+                        <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                            ${formatMarkdown(responseText)}
+                        </div>
+                    </div>
+                `;
+                showToast("ניתוח הנזק החזותי הושלם בהצלחה!", "success");
+            } catch (e) {
+                console.error(e);
+                showToast("שגיאה בפענוח התמונה על ידי ה-AI", "error");
+                consoleEl.innerHTML = `<p class="text-red-400 text-xs font-bold">שגיאה בעיבוד התמונה: ${e.message}</p>`;
+            } finally {
+                loader.classList.add('hidden');
             }
-            document.getElementById('teslaTotalPaid').innerText = `₪${Math.round(totalTeslaPaid).toLocaleString()}`;
+        }
+
+        // --- STREAMING_CHUNK: Managing Chat Companion Dialogs... ---
+        function setQuickQuestion(questionText) {
+            document.getElementById('chatInput').value = questionText;
+            sendQuickChatMessage();
+        }
+
+        async function sendQuickChatMessage() {
+            const inputEl = document.getElementById('chatInput');
+            const text = inputEl.value.trim();
+            if (!text) return;
+
+            // Clear input
+            inputEl.value = "";
+
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            const consoleEl = document.getElementById('aiOutputConsole');
+            const loader = document.getElementById('aiLoader');
+            document.getElementById('panelTitle').innerText = "שיחת מומחה טסלה - Gemini";
+            document.getElementById('loaderText').innerText = "מכין תשובה מקצועית...";
+            loader.classList.remove('hidden');
+
+            try {
+                const responseText = await callGeminiAPI(text);
+                const date = new Date().toLocaleTimeString('he-IL');
+                
+                // Add message bubble layout inside console
+                consoleEl.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl">
+                            <span class="text-[10px] text-slate-400 block mb-1">השאלה שלך:</span>
+                            <p class="text-xs text-white font-bold">${text}</p>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800/80 space-y-3">
+                            <span class="text-[10px] text-emerald-400 font-bold block">תשובת מומחה Gemini:</span>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                ${formatMarkdown(responseText)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                showToast("התקבלה תשובת מומחה AI");
+            } catch (e) {
+                console.error(e);
+                showToast("שגיאה בקבלת תשובה", "error");
+                consoleEl.innerHTML = `<p class="text-red-400 text-xs font-bold">מצטערים, חלה שגיאה בחיבור לצ'אט: ${e.message}</p>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // --- STREAMING_CHUNK: Setting up Clipboard & Reset Functions... ---
+        function clearConsole() {
+            const consoleEl = document.getElementById('aiOutputConsole');
+            consoleEl.innerHTML = `
+                <div class="text-slate-400 text-sm space-y-4 leading-relaxed" id="welcomeMessage">
+                    <p class="font-semibold text-emerald-400">המסך נוקה בהצלחה.</p>
+                    <p>בחר פקודה או הקלד שאלה למטה כדי להתחיל מחדש.</p>
+                </div>
+            `;
+            document.getElementById('panelTitle').innerText = "מסך פלטי AI ואבחון";
+            showToast("הקונסולה נוקתה.");
+        }
+
+        function copyConsoleOutput() {
+            const consoleEl = document.getElementById('aiOutputConsole');
+            const textToCopy = consoleEl.innerText;
             
-            const teslaTotalOutlay = totalTeslaPaid + equity;
-            document.getElementById('teslaTotalOutlay').innerText = `₪${Math.round(teslaTotalOutlay).toLocaleString()}`;
-
-            // Update Chart Data
-            financeChart.data.labels = labels;
-            financeChart.data.datasets[0].data = promoCumulativePayments;
-            financeChart.data.datasets[1].data = teslaPayments;
-            financeChart.data.datasets[2].data = bankCumulativePayments;
+            // Hidden dummy element for legacy copy command execution due to iframe clipboard restrictions
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = textToCopy;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
             
-            // Rename Dataset label dynamically
-            financeChart.data.datasets[0].label = isBalloonLoan ? 'מבצע טסלה בלון 1.25% (הוצאה כוללת)' : 'מבצע טסלה קבוע 1.25% (הוצאה כוללת)';
-            financeChart.data.datasets[1].label = 'מבצע טסלה 0% צמוד מדד (הוצאה כוללת)';
-            financeChart.data.datasets[2].label = 'הלוואה בנקאית קבועה (הוצאה כוללת)';
-            financeChart.update();
+            showToast("הפלט הועתק ללוח הגזירים בהצלחה!", "success");
         }
 
-        // --- STREAMING_CHUNK: Configuring Interactive Simulators... ---
-        // --- Used Battery degradation math ---
-        function updateBatteryHealth() {
-            const year = parseInt(document.getElementById('batteryYear').value);
-            const km = parseFloat(document.getElementById('batteryKm').value);
-            const age = 2026 - year;
-
-            document.getElementById('kmLabel').innerText = `${km.toLocaleString()} ק"מ`;
-
-            let degradation = 4.5; 
-            degradation += Math.min(30000, km) * 0.00015; 
-            if (km > 30000) {
-                degradation += (km - 30000) * 0.00005; 
-            }
-            degradation += age * 1.1; 
-
-            const soh = Math.max(70, 100 - degradation);
-            const resultEl = document.getElementById('sohResult');
-            const verdictEl = document.getElementById('sohVerdict');
-
-            resultEl.innerText = `${soh.toFixed(1)}%`;
-
-            if (soh >= 88) {
-                resultEl.className = "text-4xl font-extrabold text-green-400";
-                verdictEl.innerText = "מצב סוללה מצוין. שחיקה טבעית לחלוטין. מתאים מאוד לקנייה ראשונית.";
-            } else if (soh >= 80) {
-                resultEl.className = "text-4xl font-extrabold text-amber-400";
-                verdictEl.innerText = "מצב סוללה סביר וממוצע. שחיקה נורמטיבית לגיל ולקילומטראז'.";
-            } else {
-                resultEl.className = "text-4xl font-extrabold text-red-500";
-                verdictEl.innerText = "שחיקת סוללה גבוהה מהממוצע. מומלץ לבצע בדיקת מעבדה מקיפה ב-EV LAB טרם הרכישה.";
-            }
-        }
-
-        // --- Annual Savings Math ---
-        let tcoPieChart;
-        function updateSavings() {
-            const km = parseFloat(document.getElementById('annualKm').value);
-            const fuelPrice = parseFloat(document.getElementById('fuelPrice').value);
-
-            document.getElementById('kmSavingsLabel').innerText = `${km.toLocaleString()} ק"מ בשנה`;
-            document.getElementById('fuelPriceLabel').innerText = `₪${fuelPrice.toFixed(2)} לליטר`;
-
-            const fuelNeeded = km / 12;
-            const petrolCost = fuelNeeded * fuelPrice;
-
-            const electricityCost = km * 0.17 * 0.574;
-
-            const savings = Math.max(0, petrolCost - electricityCost);
-            document.getElementById('annualSavings').innerText = `₪${Math.round(savings).toLocaleString()}`;
-
-            const annualInsurance = 7500;
-            const annualCharging = electricityCost;
-            const annualMaintenance = 1000; 
-
-            if (tcoPieChart) {
-                tcoPieChart.data.datasets[0].data = [annualInsurance, Math.round(annualCharging), annualMaintenance];
-                tcoPieChart.update();
-            }
-        }
-
-        function initTcoPieChart() {
-            const ctx = document.getElementById('tcoPieChart').getContext('2d');
-            tcoPieChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['ביטוח מקיף וחובה', 'עלויות טעינה (ביתית)', 'תחזוקה ואגרת טסט'],
-                    datasets: [{
-                        data: [7500, 1950, 1000],
-                        backgroundColor: ['#1e293b', '#3b82f6', '#94a3b8'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { 
-                            position: 'right',
-                            labels: { color: '#94a3b8', font: { family: 'Assistant', size: 10 } } 
-                        }
-                    }
-                }
-            });
-        }
-
-        // --- Models Range Chart (Chart.js) ---
-        function initRangeChart() {
-            const ctx = document.getElementById('rangeChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: [
-                        'M3 RWD Standard (התצורה שלך)',
-                        'M3 LR RWD (חדש)', 
-                        'M3 Standard (משומש 2021)', 
-                        'MY RWD (חדש)', 
-                        'MY Long Range (חדש)'
-                    ],
-                    datasets: [
-                        {
-                            label: 'טווח מוצהר/ריאלי (ק"מ)',
-                            data: [534, 750, 380, 455, 622],
-                            backgroundColor: '#10b981',
-                            borderRadius: 8,
-                            barThickness: 16
-                        },
-                        {
-                            label: 'מחיר בשוק (ש"ח)',
-                            data: [194378, 228928, 110000, 248000, 268401],
-                            backgroundColor: '#1e293b',
-                            borderRadius: 8,
-                            barThickness: 16,
-                            yAxisID: 'yPrice'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        x: { ticks: { font: { family: 'Assistant', size: 10 } } },
-                        y: { 
-                            type: 'linear',
-                            position: 'right',
-                            title: { display: true, text: 'קילומטרים', font: { family: 'Assistant' } }
-                        },
-                        yPrice: {
-                            type: 'linear',
-                            position: 'left',
-                            grid: { drawOnChartArea: false },
-                            title: { display: true, text: 'מחיר (ש"ח)', font: { family: 'Assistant' } }
-                        }
+        // --- STREAMING_CHUNK: Initializing Chart.js components... ---
+        function initCharts() {
+            // Market Analysis Chart (Bar/Scatter style)
+            const marketCanvas = document.getElementById('marketChart');
+            if (marketCanvas) {
+                const ctx = marketCanvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            'Model 3 SR+ (2021)',
+                            'Model 3 SR+ (2022)',
+                            'Model 3 LR (2021)',
+                            'Model 3 LR (2022)',
+                            'Model Y LR (2022)'
+                        ],
+                        datasets: [
+                            {
+                                label: 'טווח ריאלי בקיץ (ק"מ)',
+                                data: [330, 360, 440, 470, 390],
+                                backgroundColor: '#3b82f6',
+                                borderRadius: 8,
+                                barThickness: 18,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'מחיר שוק ממוצע (₪)',
+                                data: [100000, 115000, 130000, 148000, 175000],
+                                backgroundColor: '#10b981',
+                                borderRadius: 8,
+                                barThickness: 18,
+                                yAxisID: 'yPrice'
+                            }
+                        ]
                     },
-                    plugins: {
-                        legend: { labels: { font: { family: 'Assistant', size: 11 } } }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#94a3b8', font: { family: 'Assistant', size: 11 } }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#94a3b8', font: { family: 'Assistant', size: 10 } }
+                            },
+                            y: {
+                                type: 'linear',
+                                position: 'right',
+                                title: { display: true, text: 'קילומטרים', color: '#94a3b8', font: { family: 'Assistant' } },
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: '#1e293b' }
+                            },
+                            yPrice: {
+                                type: 'linear',
+                                position: 'left',
+                                title: { display: true, text: 'מחיר (ש"ח)', color: '#94a3b8', font: { family: 'Assistant' } },
+                                ticks: { color: '#94a3b8' },
+                                grid: { display: false }
+                            }
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            // Warranty Remaining Chart
+            const warrantyCanvas = document.getElementById('warrantyChart');
+            if (warrantyCanvas) {
+                const ctx = warrantyCanvas.getContext('2d');
+                warrantyChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['נוצל מהאחריות (%)', 'נותר באחריות (%)'],
+                        datasets: [{
+                            data: [45, 55],
+                            backgroundColor: ['#334155', '#3b82f6'],
+                            borderWidth: 0,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { color: '#94a3b8', font: { family: 'Assistant', size: 10 } }
+                            }
+                        }
+                    }
+                });
+            }
         }
 
-        // --- Global Initialization ---
+        // --- Window Load Initialization ---
         window.onload = function() {
-            initChecklist();
-            initRangeChart();
-            initFinanceChart();
-            initTcoPieChart();
-
-            // Run calculations
-            setLoanType(true); // Default to Balloon
-            updateBatteryHealth();
-            updateSavings();
-
-            // Add Event Listeners for dynamic updates
-            document.getElementById('priceInput').addEventListener('input', updateFinanceCalculator);
-            document.getElementById('equityInput').addEventListener('input', updateFinanceCalculator);
-            document.getElementById('periodInput').addEventListener('input', updateFinanceCalculator);
-            document.getElementById('balloonInput').addEventListener('input', updateFinanceCalculator);
-            document.getElementById('inflationInput').addEventListener('input', updateFinanceCalculator);
-            document.getElementById('bankInterestInput').addEventListener('input', updateFinanceCalculator);
-
-            document.getElementById('batteryYear').addEventListener('change', updateBatteryHealth);
-            document.getElementById('batteryKm').addEventListener('input', updateBatteryHealth);
-
-            document.getElementById('annualKm').addEventListener('input', updateSavings);
-            document.getElementById('fuelPrice').addEventListener('input', updateSavings);
+            initCharts();
+            
+            // Connect Price Adjuster inputs
+            const basePriceInput = document.getElementById('basePriceInput');
+            if (basePriceInput) {
+                basePriceInput.addEventListener('input', updatePricingCalculator);
+                document.getElementById('kmInput').addEventListener('input', updatePricingCalculator);
+                document.getElementById('ageInput').addEventListener('input', updatePricingCalculator);
+                document.getElementById('ownershipInput').addEventListener('change', updatePricingCalculator);
+                
+                // Perform first calculations
+                updatePricingCalculator();
+                updateWarrantyTracker();
+            }
         };
     </script>
 </body>
 </html>
-```
-eof
-
-### סיכום העדכונים שבוצעו:
-1. **שיקלול המקדמה (הון עצמי):** הוספתי את המשתנה `equity` (המקדמה בסך ₪23,502) לכל חישובי העלות המצטברים. כעת המחשבון מציג בבירור את החלוקה בין החזר ההלוואה עצמה לבין **סך כל ההוצאה בפועל (החזרים + המקדמה הראשונית)**.
-2. **אופטימיזציה לגרף הסימולציה:** הגרף מתחיל כעת מחודש 0 ("מקדמה") בגובה של ₪23,502, ומטפס משם בצורה מדויקת כדי לשקף את צבירת העלויות לאורך 48 חודשים.
-3. **שקיפות מלאה:** שינוי זה מאפשר לך לראות שבמסלול הבלון החדש של 1.25%, סך ההוצאה הכוללת שלך מהכיס לאחר 4 שנים (כולל המקדמה) יעמוד על כ-**₪201,182** בלבד! זאת לעומת כ-₪236,514 במסלול צמוד המדד הישן, או כ-₪259,446 בהלוואה בנקאית רגילה.
-
-באפשרותך ללחוץ על כפתור ה-**Preview** במסך הימני כדי לראות את השינויים פועלים ומחושבים בזמן אמת!
